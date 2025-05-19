@@ -62,20 +62,6 @@ and education.
   <div className="faq-card">
     <div className="faq-inner">
       <div className="faq-front">
-        <img src={faq1} alt="Planting Tree" className="faq-image" />
-        <p className="faq-question">What happens if I adopt a tree?</p>
-      </div>
-      <div className="faq-back">
-        <p className="faq-answer">Adopting a tree means funding the growth of a seed. Once you adopt, a tree will be planted on your behalf, and you'll receive a digital certificate (PDF download) to mark your contribution. Your support doesn't stop there—any future donations you make will go toward tree-planting drives and sustaining the SaTaLa organization. All funds go directly to initiatives that protect the trees and the lake ecosystem.
-<br /> 🌱
-Note: You’ll need an account to adopt and track your trees.</p>
-      </div>
-    </div>
-  </div>
-
-  <div className="faq-card">
-    <div className="faq-inner">
-      <div className="faq-front">
         <img src={faq2} alt="Beach Clean-Up" className="faq-image" />
         <p className="faq-question">What am I volunteering for?</p>
       </div>
@@ -89,10 +75,22 @@ Note: You’ll need an account to adopt and track your trees.</p>
     <div className="faq-inner">
       <div className="faq-front">
         <img src={faq3} alt="Volunteering" className="faq-image" />
-        <p className="faq-question">How do I Volunteer</p>
+        <p className="faq-question">How do I Volunteer?</p>
       </div>
       <div className="faq-back">
         <p className="faq-answer">To join an event, you can create an account and register for the one that interests you. Don’t have an account? No problem—you can still volunteer as a guest! We’ll just need your email so we can keep you updated with event details and reminders. ✋</p>
+      </div>
+    </div>
+  </div>
+
+  <div className="faq-card">
+    <div className="faq-inner">
+      <div className="faq-front">
+        <img src={faq1} alt="Planting Tree" className="faq-image" />
+        <p className="faq-question"> Where can I see the events I can sign up for? </p>
+      </div>
+      <div className="faq-back">
+        <p className="faq-answer">The events you can sign up for will be posted on the Events page of the website or accessed through this link. There are various events available, such as tree planting, cleanup drives, and more. All upcoming events will be displayed on the Events page, where you can click on an event card to view its description and the date it will take place.</p>
       </div>
     </div>
   </div>

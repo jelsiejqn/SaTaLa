@@ -15,7 +15,7 @@ const Navbar = () => {
 
         {/* Right Side */}
         <div className="navbar-right">
-          <button className="adopt-btn">Adopt a Tree</button>
+          <button className="adopt-btn">Events</button>
           <button className="volunteer-btn">Volunteer</button>
 
           {/* Profile Icon */}

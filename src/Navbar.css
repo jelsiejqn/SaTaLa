@@ -1,0 +1,145 @@
+/* Wrapper so you can reuse it across pages */
+.navbar-wrapper {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: transparent;
+}
+
+/* Main Navbar Layout */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem;
+}
+
+/* Logo */
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Right-side buttons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Buttons */
+
+.adopt-btn {
+     transition: 0.3s ease;
+  background-color: white;
+  color: #374331;
+  border: 1px solid #374331;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.adopt-btn:hover {
+    transition: 0.3s ease-in-out;
+    background-color:#64785a;
+    color: white;
+}
+
+.volunteer-btn {
+     transition: 0.3s ease;
+  font-family: Century Gothic;
+  background-color: #374331;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 20px;
+   border: 1px, solid,#374331 ;
+}
+
+.volunteer-btn:hover {
+    
+    transition: 0.3s ease-in-out;
+    background-color: white;
+    color:  #374331;
+    border: 1px, solid, #374331;
+}
+
+/* Profile dropdown */
+.profile-container {
+  position: relative;
+  cursor: pointer;
+  
+}
+
+.profile-icon {
+  font-size: 2rem;
+  color:  #374331;
+    transition: 0.3s ease-in-out;
+}
+
+.profile-icon:hover {
+  opacity: 60%;
+}
+
+.dropdown {
+     transition: 0.3s ease;
+  position: absolute;
+  top: 2.4rem;
+  right: 0;
+  background-color: white;
+  color: #374331;
+  border: 1px solid white;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.dropdown-txt {
+      transition: 0.3s ease-in-out;
+font-family: Century Gothic;
+padding: 0.3rem 0.7rem;
+border-radius: 20px;
+}
+
+.dropdown-txt:hover {
+    transition: 0.3s ease-in-out;
+    background-color:#64785a;
+    color: white;
+}
+
+.logo {
+  height: 70px; 
+  cursor: pointer; 
+}
+
+
+
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-right {
+    width: 100%;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .navbar-logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .adopt-btn,
+  .volunteer-btn {
+    flex: 1 1 45%;
+    margin-bottom: 0.5rem;
+  }
+}

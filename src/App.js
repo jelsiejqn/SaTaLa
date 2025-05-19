@@ -7,10 +7,11 @@ import AdminDashboard from './AdminDashboard';
 function App() {
   return (
   <>
-    {/* <Navbar />
+    <Navbar />
      <Home />
-     <Footer /> */}
-    <AdminDashboard />;
+     <Footer />
+     
+    {/* <AdminDashboard />; */}
 
 
     </>

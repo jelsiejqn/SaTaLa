@@ -1,0 +1,453 @@
+input {
+    font-family: Century Gothic;
+    font-size: 0.7vw;
+    
+}
+
+textarea, ::placeholder {
+    text-align: center;
+    font-family: Century Gothic;
+    font-size: 0.8vw;
+}
+
+textarea {
+    max-width: 90%;
+}
+
+
+th {
+    font-size: 1vw;
+}
+
+select {
+    font-family: Century Gothic;
+    border-radius: 20px;
+    padding: 0.5vw;
+}
+
+table {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+button {
+    font-family: Century Gothic;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5vw;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 60%;
+    transition: 0.3s ease;
+}
+
+.del-btn, .edit-btn {
+    font-size: 0.9vw;
+}
+
+.del-btn:hover {
+    transition: 0.3s ease-in-out;
+    color: white;
+    background-color: rgb(255, 0, 0);
+}
+
+.edit-btn:hover {
+    transition: 0.3s ease-in-out;
+    color: white;
+    background-color: rgb(18, 99, 20);
+}
+
+.btn-add {
+    font-size: 0.8vw;
+    font-family: Century Gothic;
+    color: white;
+    background-color: rgb(64, 110, 64);
+}
+
+.calendar {
+    position: fixed;
+    top: 30px;
+    left: -10px;
+    z-index: 20;
+    width: 10px;
+}
+
+.cal_img {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
+
+.cal_img:hover {
+    transition: 0.3s;
+   opacity: 60%;
+}
+
+/* Container for the dashboard */
+.dashboard-container {
+    margin-top: 5%;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-wrap: wrap;
+    width: 180vh; /* Full width to ensure responsiveness */
+    height: 85vh;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar */
+.sidebar {
+    scroll-behavior: smooth;
+    width: 15vw; /* 15% of the screen width */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    height: 100%;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    border-radius: 25px;
+    z-index: 100; /* Keep sidebar in front */
+}
+
+.sidebar h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 25px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Content */
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+    height: calc(100vh - 130px); /* Adjust height to make sure it stays visible */
+    max-width: calc(100% - 250px);
+   
+}
+
+.content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 700;
+}
+
+.content .section {
+    margin-bottom: 30px;
+}
+
+/* Form Fields (Narrowed down) */
+.content label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.content input[type="file"] {
+    font-family: Century Gothic;
+}
+
+.content input[type="text"],
+.content input[type="email"],
+.content input[type="password"] {
+    width: 80%;
+    max-width: 500px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content input[type="text"]:focus,
+.content input[type="email"]:focus,
+.content input[type="password"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+td {
+    align-items: center;
+    text-align: center;
+}
+
+/* Buttons */
+
+/* Custom Scrollbar Design */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+h1 {
+    padding-left: 0.5vw;
+}
+
+/* Prevent horizontal scrolling */
+body {
+    overflow-x: hidden;
+}
+
+
+/* Styling for the sortby-container and booking-container */
+.sortby-container {
+    transform: translate(-44%, 0%);
+    text-align: left;
+   align-items: left;
+}
+
+.booking-container {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.td-date {
+    text-align: center;
+    width: auto;
+    font-size: 1vw;
+}
+
+img {
+    width: 6vw;
+}
+
+h1 {
+    font-size: 1.3vw;
+    }
+    
+
+h5 {
+    font-size: 1vw;
+    line-height: 2vw;
+}
+    
+
+.td-details {
+    width: auto;
+    font-size: 1vw;
+}
+
+h5 {
+    line-height: 2vw;
+
+    text-align: center;
+    font-size: 1vw;
+}
+
+h6 {
+    line-height: 2vw;
+
+    text-align: center;
+    font-size: 0.8vw;
+    color: gray;
+}
+
+tr {
+    margin-bottom: 10px;
+}
+
+.td-booker, .td-satisfaction, .td-review, .td-details, .td-date {
+    /* padding-right: 10vw; */
+    width: auto;
+    font-size: 1vw;
+}
+
+.td-booker {
+    line-height: 3vw;
+    width: auto;
+    font-size: 1vw;
+}
+
+.td-satisfaction {
+    align-content: center;
+    align-items: center;
+}
+
+.td-review {
+    max-width: 20vw;
+}
+
+
+.img-satisfaction {
+    
+    width: 3vw;
+}
+
+.booking-container td {
+    padding: 10px 10px 0px 10px;
+}
+
+
+.txt-cancel {
+    font-family: Century Gothic;
+    font-size: 1vw;
+}
+
+.completed-icon {
+    width: 3vw;
+}
+
+
+
+/* Mobile Responsiveness: Sidebar moves to the top */
+@media screen and (max-width: 768px) {
+
+    .dashboard-container {
+        height: auto;
+        overflow-y: visible;
+        align-items: center;
+        flex-direction: column; /* Stack the sidebar and content vertically */
+    }
+
+    .sidebar {
+        height: 20%;
+        width: 100%; /* Make sidebar take full width on small screens */
+        padding: 10px;
+        border-right: none;
+        position: relative; /* Sidebar will be at the top of the screen */
+        top: unset;
+        margin: 0;
+        flex-shrink: 0;
+        box-shadow: none;
+    }
+
+    .content {
+        padding: 20px;
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 20%); /* Make content take up remaining space */
+        margin-left: 0;
+        overflow-y: auto; /* Allow scrolling if content overflows */
+    }
+
+    /* Sidebar links */
+    .sidebar a {
+        padding: 10px 20px;
+        font-size: 2vw;
+        display: inline-block;
+    }
+}
+
+/* Adjust font sizes and layout for even smaller screens */
+@media screen and (max-width: 480px) {
+    .content h2 {
+        font-size: 22px;
+    }
+
+    .content label,
+    .content input,
+    .content button {
+        font-size: 14px;
+    }
+
+    .booking-container {
+        max-width: 100%;
+    }
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 20px; /* Border radius of 20px */
+    width: 80%;
+    max-width: 400px;
+    font-family: Century Gothic;
+}
+
+.modal-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Make the modal visible when triggered */
+.modal.show {
+    display: block;
+}
+
+form {
+    max-width: 10vw;
+}
+
+.fileUpload {
+    width: 100%;
+    display: table-row;
+    
+}
+
+#submit {
+    background-color: green;
+}
+
+textarea {
+    font-size: 1vw;
+    text-align: center;
+    border: none;
+    border-radius: 15px;
+    font-family: Century Gothic;
+    height: auto;
+}
+
+.fileUpload {
+    text-align: center;
+}
+

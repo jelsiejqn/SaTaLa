@@ -1,0 +1,281 @@
+/* Main container styles */
+.events-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: Century Gothic;
+}
+
+.events-title {
+    font-family: Century Gothic;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Sort dropdown styles */
+.sort-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sort-select {
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Events grid layout */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+/* Polaroid card styles */
+.event-card {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  perspective: 1000px;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-card.flipping {
+  transform: rotateY(180deg);
+}
+
+.polaroid {
+  background: white;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.polaroid-image {
+  width: 100%;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.polaroid-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  display: block;
+}
+
+.polaroid-content {
+  text-align: center;
+}
+
+.polaroid-content h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.polaroid-content p {
+    font-family: Century Gothic;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.event-date {
+    font-family: Century Gothic;
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+/* Modal styles */
+.modal-overlay {
+    
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.close-button {
+    font-family: Century Gothic;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  z-index: 10;
+}
+
+.modal-grid {
+    border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.modal-image {
+  width: 100%;
+}
+
+.modal-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.modal-details {
+    font-family: Century Gothic;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-details h2 {
+    font-family: Century Gothic;
+  margin-top: 0;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-description {
+    font-family: Century Gothic;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.modal-datetime {
+    font-family: Century Gothic;
+  margin-bottom: 1.5rem;
+}
+
+.modal-datetime p {
+    font-family: Century Gothic;
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.volunteer-button,
+.volunteer-guest-button {
+    font-family: Century Gothic;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.volunteer-button {
+    font-family: Century Gothic;
+  background-color:#374331;
+  color: white;
+  border: 1px solid #374331;
+}
+
+.volunteer-guest-button {
+    font-family: Century Gothic;
+  background-color: white;
+  color: #374331;
+  border: 1px solid #374331;
+}
+
+.volunteer-button:hover {
+  background-color: white;
+  color: #374331;
+}
+
+.volunteer-guest-button:hover {
+  background-color: #64785a;
+  color: white;
+}
+
+/* Animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .events-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+}
+
+@media (max-width: 600px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sort-container {
+    justify-content: center;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+}

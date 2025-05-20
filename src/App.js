@@ -12,11 +12,11 @@ function App() {
     
 
   {/* <Home /> */}
-    <Events />
+    {/* <Events /> */}
 
-    {/* <AdminDashboard />; */}
+    <AdminDashboard />;
 
-<Footer />
+{/* <Footer /> */}
     </>
   );
 }

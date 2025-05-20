@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./AdminDashboard.css";
 import bgImage from "./assets/home_bg.png"; // adjust path as needed
 import HomeStats from "./HomeStats";
+import EventsManager from "./EventsManager";
+import VolunteerCount from "./VolunteerCount";
 
 const AdminDashboard = () => {
   const [activeView, setActiveView] = useState("orgProgress");
@@ -11,9 +13,9 @@ const AdminDashboard = () => {
       case "orgProgress":
         return <div> <br /> <br /> <br /> <br /> <HomeStats /> </div>;
       case "eventsManager":
-        return <div>{/* Events Manager content */}</div>;
+        return <div> <EventsManager /> </div>;
       case "volunteers":
-        return <div>{/* Volunteers content */}</div>;
+        return <div> <br /><VolunteerCount /></div>;
       default:
         return null;
     }

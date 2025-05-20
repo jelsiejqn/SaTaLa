@@ -1,0 +1,345 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+
+/* Base styles */
+.volunteer-count-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+}
+
+/* Header styles */
+.volunteer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.volunteer-header h2 {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-control select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+  color: #333;
+}
+
+/* Event cards container */
+.event-cards-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #64785a #f0f0f0;
+}
+
+.event-cards-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.event-cards-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.event-cards-container::-webkit-scrollbar-thumb {
+  background-color: #64785a;
+  border-radius: 10px;
+}
+
+/* Event card styles */
+.event-card {
+  flex: 0 0 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.event-image {
+  height: 140px;
+  overflow: hidden;
+}
+
+.event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-details {
+  padding: 15px;
+}
+
+.event-details h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.event-date {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.volunteer-number {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.volunteer-number span {
+  font-family: "Abril Fatface", cursive;
+  font-size: 36px;
+  color: #64785a;
+  display: block;
+  line-height: 1;
+}
+
+.volunteer-number p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 25px;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  z-index: 10;
+}
+
+.modal-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.modal-date {
+  margin: 0 0 10px 0;
+  color: #666;
+}
+
+.volunteer-count-badge {
+  display: inline-block;
+  background-color: #64785a;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.volunteer-count-badge span {
+  font-family: "Abril Fatface", cursive;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.volunteer-list-container h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.volunteer-table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.volunteer-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.volunteer-table th,
+.volunteer-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.volunteer-table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.guest-badge,
+.member-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.guest-badge {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.member-badge {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.export-button,
+.close-modal-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.export-button {
+  background-color: #64785a;
+  color: white;
+}
+
+.close-modal-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.export-button:hover {
+  background-color: #556b4c;
+}
+
+.close-modal-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .volunteer-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .event-card {
+    flex: 0 0 250px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .export-button,
+  .close-modal-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-card {
+    flex: 0 0 220px;
+  }
+
+  .volunteer-table th:nth-child(4),
+  .volunteer-table td:nth-child(4) {
+    display: none; /* Hide registration date column on very small screens */
+  }
+
+  .volunteer-number span {
+    font-size: 30px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 360px) {
+  .event-card {
+    flex: 0 0 180px;
+  }
+
+  .event-image {
+    height: 100px;
+  }
+
+  .event-details {
+    padding: 10px;
+  }
+
+  .event-details h3 {
+    font-size: 16px;
+  }
+
+  .volunteer-number span {
+    font-size: 26px;
+  }
+}

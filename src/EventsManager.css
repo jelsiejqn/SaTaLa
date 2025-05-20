@@ -1,453 +1,326 @@
-input {
-    font-family: Century Gothic;
-    font-size: 0.7vw;
-    
+.events-manager {
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: Century Gothic;
 }
 
-textarea, ::placeholder {
-    text-align: center;
-    font-family: Century Gothic;
-    font-size: 0.8vw;
+/* Controls container */
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: Century Gothic;
 }
 
-textarea {
-    max-width: 90%;
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  font-family: Century Gothic;
 }
 
-
-th {
-    font-size: 1vw;
+.filter-buttons button {
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: Century Gothic;
 }
 
-select {
-    font-family: Century Gothic;
-    border-radius: 20px;
-    padding: 0.5vw;
+.filter-buttons button.active {
+  background-color: #64785a;
+  color: white;
+  border-color: #64785a;
+  font-family: Century Gothic;
 }
 
-table {
-    min-width: 100%;
-    max-width: 100%;
+.sort-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: Century Gothic;
 }
 
-button {
-    font-family: Century Gothic;
-    border: none;
-    border-radius: 20px;
-    padding: 0.5vw;
-    cursor: pointer;
+.sort-dropdown select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: white;
+  font-size: 14px;
+  font-family: Century Gothic;
 }
 
-button:hover {
-    opacity: 60%;
-    transition: 0.3s ease;
+/* Add event form */
+.add-event-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 20px;
+  align-items: flex-end;
+  font-family: Century Gothic;
 }
 
-.del-btn, .edit-btn {
-    font-size: 0.9vw;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 120px;
+  font-family: Century Gothic;
 }
 
-.del-btn:hover {
-    transition: 0.3s ease-in-out;
-    color: white;
-    background-color: rgb(255, 0, 0);
+.form-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+  font-family: Century Gothic;
 }
 
-.edit-btn:hover {
-    transition: 0.3s ease-in-out;
-    color: white;
-    background-color: rgb(18, 99, 20);
+.form-group input,
+.form-group textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: Century Gothic;
 }
 
-.btn-add {
-    font-size: 0.8vw;
-    font-family: Century Gothic;
-    color: white;
-    background-color: rgb(64, 110, 64);
+.image-preview {
+  margin-top: 5px;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 20px;
+  font-family: Century Gothic;
 }
 
-.calendar {
-    position: fixed;
-    top: 30px;
-    left: -10px;
-    z-index: 20;
-    width: 10px;
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.cal_img {
-    width: 30px;
-    height: auto;
-    cursor: pointer;
+.add-button {
+  padding: 8px 16px;
+  background-color: #64785a;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 36px;
+  align-self: flex-end;
+  font-family: Century Gothic;
 }
 
-.cal_img:hover {
-    transition: 0.3s;
-   opacity: 60%;
+.add-button:hover {
+  background-color: #64785a;
 }
 
-/* Container for the dashboard */
-.dashboard-container {
-    margin-top: 5%;
-    scroll-behavior: smooth;
-    display: flex;
-    flex-wrap: wrap;
-    width: 180vh; /* Full width to ensure responsiveness */
-    height: 85vh;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+/* Events table */
+.events-table-container {
+  overflow-x: auto;
+  font-family: Century Gothic;
 }
 
-/* Sidebar */
-.sidebar {
-    scroll-behavior: smooth;
-    width: 15vw; /* 15% of the screen width */
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    height: 100%;
-    position: sticky;
-    top: 0;
-    flex-shrink: 0;
-    border-radius: 25px;
-    z-index: 100; /* Keep sidebar in front */
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
-.sidebar h3 {
-    margin-bottom: 20px;
-    font-size: 22px;
-    font-weight: 600;
-    color: #333;
+.events-table th,
+.events-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-.sidebar a {
-    display: block;
-    padding: 12px;
-    font-size: 16px;
-    color: #333;
-    text-decoration: none;
-    border-radius: 25px;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+.events-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
 }
 
-.sidebar a:hover {
-    background-color: #007bff;
-    color: white;
-    transform: scale(1.05);
+.events-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Content */
-.content {
-    flex-grow: 1;
-    padding: 30px;
-    background-color: white;
-    border-radius: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    overflow-y: auto;
-    height: calc(100vh - 130px); /* Adjust height to make sure it stays visible */
-    max-width: calc(100% - 250px);
-   
+.events-table tbody tr:hover {
+  background-color: #f5f5f5;
 }
 
-.content h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
-    font-weight: 700;
+.table-image {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 20px;
 }
 
-.content .section {
-    margin-bottom: 30px;
+.table-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Form Fields (Narrowed down) */
-.content label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: #555;
+.past-event {
+  opacity: 0.6;
+  background-color: #f9f9f9;
 }
 
-.content input[type="file"] {
-    font-family: Century Gothic;
+.no-events {
+  text-align: center;
+  color: #888;
+  padding: 20px;
 }
 
-.content input[type="text"],
-.content input[type="email"],
-.content input[type="password"] {
-    width: 80%;
-    max-width: 500px;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    background-color: #fafafa;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.content input[type="text"]:focus,
-.content input[type="email"]:focus,
-.content input[type="password"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-}
-
-td {
-    align-items: center;
-    text-align: center;
-}
-
-/* Buttons */
-
-/* Custom Scrollbar Design */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #2a2a2a;
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-h1 {
-    padding-left: 0.5vw;
-}
-
-/* Prevent horizontal scrolling */
-body {
-    overflow-x: hidden;
-}
-
-
-/* Styling for the sortby-container and booking-container */
-.sortby-container {
-    transform: translate(-44%, 0%);
-    text-align: left;
-   align-items: left;
-}
-
-.booking-container {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    margin-bottom: 10px;
-}
-
-.td-date {
-    text-align: center;
-    width: auto;
-    font-size: 1vw;
-}
-
-img {
-    width: 6vw;
-}
-
-h1 {
-    font-size: 1.3vw;
-    }
-    
-
-h5 {
-    font-size: 1vw;
-    line-height: 2vw;
-}
-    
-
-.td-details {
-    width: auto;
-    font-size: 1vw;
-}
-
-h5 {
-    line-height: 2vw;
-
-    text-align: center;
-    font-size: 1vw;
-}
-
-h6 {
-    line-height: 2vw;
-
-    text-align: center;
-    font-size: 0.8vw;
-    color: gray;
-}
-
-tr {
-    margin-bottom: 10px;
-}
-
-.td-booker, .td-satisfaction, .td-review, .td-details, .td-date {
-    /* padding-right: 10vw; */
-    width: auto;
-    font-size: 1vw;
-}
-
-.td-booker {
-    line-height: 3vw;
-    width: auto;
-    font-size: 1vw;
-}
-
-.td-satisfaction {
-    align-content: center;
-    align-items: center;
-}
-
-.td-review {
-    max-width: 20vw;
-}
-
-
-.img-satisfaction {
-    
-    width: 3vw;
-}
-
-.booking-container td {
-    padding: 10px 10px 0px 10px;
-}
-
-
-.txt-cancel {
-    font-family: Century Gothic;
-    font-size: 1vw;
-}
-
-.completed-icon {
-    width: 3vw;
-}
-
-
-
-/* Mobile Responsiveness: Sidebar moves to the top */
-@media screen and (max-width: 768px) {
-
-    .dashboard-container {
-        height: auto;
-        overflow-y: visible;
-        align-items: center;
-        flex-direction: column; /* Stack the sidebar and content vertically */
-    }
-
-    .sidebar {
-        height: 20%;
-        width: 100%; /* Make sidebar take full width on small screens */
-        padding: 10px;
-        border-right: none;
-        position: relative; /* Sidebar will be at the top of the screen */
-        top: unset;
-        margin: 0;
-        flex-shrink: 0;
-        box-shadow: none;
-    }
-
-    .content {
-        padding: 20px;
-        width: 100%;
-        max-width: 100%;
-        height: calc(100vh - 20%); /* Make content take up remaining space */
-        margin-left: 0;
-        overflow-y: auto; /* Allow scrolling if content overflows */
-    }
-
-    /* Sidebar links */
-    .sidebar a {
-        padding: 10px 20px;
-        font-size: 2vw;
-        display: inline-block;
-    }
-}
-
-/* Adjust font sizes and layout for even smaller screens */
-@media screen and (max-width: 480px) {
-    .content h2 {
-        font-size: 22px;
-    }
-
-    .content label,
-    .content input,
-    .content button {
-        font-size: 14px;
-    }
-
-    .booking-container {
-        max-width: 100%;
-    }
-}
-
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    padding-top: 60px;
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 20px; /* Border radius of 20px */
-    width: 80%;
-    max-width: 400px;
-    font-family: Century Gothic;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-form .form-group {
+  width: 100%;
+}
+
+.edit-form textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .modal-buttons {
-    text-align: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-/* Make the modal visible when triggered */
-.modal.show {
-    display: block;
+.update-button,
+.delete-button,
+.cancel-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-form {
-    max-width: 10vw;
+.update-button {
+  background-color: #64785a;
+  color: white;
 }
 
-.fileUpload {
+.delete-button {
+  background-color: #cb584c;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.update-button:hover {
+  background-color: #64785a;
+}
+
+.delete-button:hover {
+  background-color: #cb584c;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .controls-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-event-form {
+    flex-direction: column;
+  }
+
+  .form-group {
     width: 100%;
-    display: table-row;
-    
+  }
+
+  .add-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .events-table th,
+  .events-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .table-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
+
+  .modal-buttons button {
+    width: 100%;
+  }
 }
 
-#submit {
-    background-color: green;
+@media (max-width: 480px) {
+  .events-table th:nth-child(3),
+  .events-table td:nth-child(3) {
+    display: none; /* Hide description column on very small screens */
+  }
 }
-
-textarea {
-    font-size: 1vw;
-    text-align: center;
-    border: none;
-    border-radius: 15px;
-    font-family: Century Gothic;
-    height: auto;
-}
-
-.fileUpload {
-    text-align: center;
-}
-

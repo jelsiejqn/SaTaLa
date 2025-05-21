@@ -1,0 +1,67 @@
+.account-settings-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full height of viewport */
+  background-color: #f5f5f5; /* Optional light background */
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.account-settings {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.account-settings h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.account-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.account-info strong {
+  color: #333;
+}
+.input-field {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.update-btn {
+  display: block;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.update-btn:disabled {
+  background-color: #7da6d9;
+  cursor: not-allowed;
+}
+
+.update-message {
+  margin-top: 1rem;
+  color: green;
+  text-align: center;
+}

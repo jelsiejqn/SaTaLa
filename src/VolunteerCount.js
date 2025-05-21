@@ -3,6 +3,15 @@
 import { useState, useEffect } from "react"
 import "./VolunteerCount.css"
 
+import sample1 from './assets/sample1.png'
+import sample2 from './assets/sample2.png'
+import sample3 from './assets/sample3.png'
+import sample4 from './assets/sample4.png'
+import sample5 from './assets/sample5.png'
+import sample7 from './assets/sample7.png'
+import sample8 from './assets/sample8.png'
+import sample6 from './assets/sample6.png'
+
 const VolunteerCount = () => {
   // Sample data - in a real app, this would come from your database
   const [events, setEvents] = useState([
@@ -11,7 +20,7 @@ const VolunteerCount = () => {
       title: "Community Cleanup",
       date: "2025-06-15",
       time: "09:00 AM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample1,
       volunteerCount: 24,
       volunteers: [
         { name: "John Doe", email: "john@example.com", isGuest: false, registeredAt: "2025-05-20T14:30:00" },
@@ -25,7 +34,7 @@ const VolunteerCount = () => {
       title: "Fundraising Gala",
       date: "2025-07-20",
       time: "06:30 PM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample2,
       volunteerCount: 12,
       volunteers: [
         { name: "Emily Wilson", email: "emily@example.com", isGuest: false, registeredAt: "2025-06-10T11:20:00" },
@@ -38,7 +47,7 @@ const VolunteerCount = () => {
       title: "Youth Workshop",
       date: "2025-06-28",
       time: "10:00 AM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample3,
       volunteerCount: 8,
       volunteers: [
         { name: "Sarah Johnson", email: "sarah@example.com", isGuest: false, registeredAt: "2025-06-01T09:30:00" },
@@ -51,7 +60,7 @@ const VolunteerCount = () => {
       title: "Charity Run",
       date: "2025-08-05",
       time: "07:00 AM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample4,
       volunteerCount: 35,
       volunteers: [
         { name: "Lisa Chen", email: "lisa@example.com", isGuest: true, registeredAt: "2025-07-10T08:45:00" },
@@ -64,7 +73,7 @@ const VolunteerCount = () => {
       title: "Art Exhibition",
       date: "2025-07-10",
       time: "11:00 AM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample5,
       volunteerCount: 15,
       volunteers: [
         { name: "Amanda Taylor", email: "amanda@example.com", isGuest: false, registeredAt: "2025-06-15T13:10:00" },
@@ -77,7 +86,7 @@ const VolunteerCount = () => {
       title: "Food Drive",
       date: "2025-06-22",
       time: "09:00 AM",
-      image: "/placeholder.svg?height=300&width=300",
+      image: sample6,
       volunteerCount: 18,
       volunteers: [
         { name: "Nicole Adams", email: "nicole@example.com", isGuest: false, registeredAt: "2025-05-30T11:45:00" },

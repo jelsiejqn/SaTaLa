@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.css';
 import { FaFacebookF, FaTwitter, FaInstagram, FaEnvelope } from 'react-icons/fa';
-import logo from './assets/home_logo.png'
+import logo from './assets/home_logo.png';
 
 const Footer = () => {
   return (
@@ -15,10 +15,36 @@ const Footer = () => {
 
         {/* Social Icons */}
         <div className="footer-socials">
-          <a href="#" aria-label="Facebook"><FaFacebookF /></a>
-          <a href="#" aria-label="Twitter"><FaTwitter /></a>
-          <a href="#" aria-label="Instagram"><FaInstagram /></a>
-          <a href="mailto:info@satala.org" aria-label="Email"><FaEnvelope /></a>
+          <a
+            href="https://www.facebook.com/sagiptaallake" // ✅ Replace with real URL
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <FaFacebookF />
+          </a>
+          <a
+            href="https://twitter.com/sagiptaallake" // ✅ Replace with real URL or remove if not applicable
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Twitter"
+          >
+            <FaTwitter />
+          </a>
+          <a
+            href="https://www.instagram.com/sagiptaallake" // ✅ Replace with real URL
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <FaInstagram />
+          </a>
+          <a
+            href="mailto:info@sagiptaallake.org"
+            aria-label="Email"
+          >
+            <FaEnvelope />
+          </a>
         </div>
       </div>
 

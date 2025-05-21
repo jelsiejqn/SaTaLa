@@ -97,3 +97,22 @@
   text-decoration: none;
   opacity: 60%;
 }
+
+/* Add these styles to your Login.css file */
+
+.admin-login-link {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.admin-login-link a {
+  color: #4a6fa5;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.admin-login-link a:hover {
+  text-decoration: none;
+  opacity: 60%;
+}

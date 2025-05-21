@@ -90,7 +90,7 @@ and education.
         <p className="faq-question"> Where can I see the events I can sign up for? </p>
       </div>
       <div className="faq-back">
-        <p className="faq-answer">The events you can sign up for will be posted on the Events page of the website or accessed through this link. There are various events available, such as tree planting, cleanup drives, and more. All upcoming events will be displayed on the Events page, where you can click on an event card to view its description and the date it will take place.</p>
+        <p className="faq-answer">Thee events you can sign up for will be posted on the Events page of the website or accessed through this link. There are various events available, such as tree planting, cleanup drives, and more. All upcoming events will be displayed on the Events page, where you can click on an event card to view its description and the date it will take place.</p>
       </div>
     </div>
   </div>

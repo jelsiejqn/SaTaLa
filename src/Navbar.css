@@ -1,5 +1,6 @@
 /* Wrapper so you can reuse it across pages */
 .navbar-wrapper {
+  background-color: #64785a;
   width: 100%;
   position: fixed;
   top: 0;

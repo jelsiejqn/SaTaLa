@@ -66,8 +66,13 @@ const Navbar = () => {
                 {session ? (
                   <>
                     <div onClick={() => navigate('/account')}>
-                      <p className="dropdown-txt">View Account Settings</p>
+                      <p className="dropdown-txt"> Account Settings</p>
                     </div>
+
+                    <div onClick={() => navigate('/myevents')}>
+                      <p className="dropdown-txt"> My Events</p>
+                    </div>
+
                     <div onClick={handleLogout}>
                       <p className="dropdown-txt">Logout</p>
                     </div>

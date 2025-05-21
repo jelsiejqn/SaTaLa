@@ -1,61 +1,30 @@
-import React from "react";
-import "./Footer.css"; // still use CSS for layout and styling
-import bgImage from "./assets/home_bg.png";
-import logoImage from "./assets/home_logo.png";
-
-import { FaFacebook, FaInstagram, FaXTwitter } from 'react-icons/fa6';
+import React from 'react';
+import './Footer.css';
+import { FaFacebookF, FaTwitter, FaInstagram, FaEnvelope } from 'react-icons/fa';
+import logo from './assets/home_logo.png'
 
 const Footer = () => {
   return (
-    <footer
-      className="footer"
-      style={{
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        color: "white",
-      }}
-
-      
-    >
-
-        
-      <div className="footer-container">
-        <div className="footer-left">
-            <img src = {logoImage} className = "footer-logo"/>
-          <h3>SaTaLa</h3>
-          <p>Reviving the lake, one tree at a time.</p>
+    <footer className="footer">
+      <div className="footer-content">
+        {/* Logo and Name */}
+        <div className="footer-logo">
+          <img src={logo} alt="SaTaLa Logo" className="footer-img" />
+          <h2 className="footer-org">SaTaLa</h2>
         </div>
 
-        <div className="footer-center">
-          <ul>
-            <li><a href="/about">About</a></li>
-            {/* <li><a href="/events">Events</a></li> */}
-            {/* <li><a href="/faq">FAQs</a></li> */}
-            <li><a href="/contact">Contact</a></li>
-          </ul>
-        </div>
-
-        <div className="footer-right">
-        <section className="social-section">
-          <h2 className="follow-title">Follow Us</h2>
-          <div className="social-icons">
-            <a href="https://www.facebook.com/sagiptaallake" target="_blank" rel="noopener noreferrer">
-              <FaFacebook className="social-icon" />
-            </a>
-            <a href="https://www.instagram.com/sagiptaallake" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="social-icon" />
-            </a>
-            <a href="https://twitter.com/sagiptaallake" target="_blank" rel="noopener noreferrer">
-              <FaXTwitter className="social-icon" />
-            </a>
-          </div>
-        </section>
+        {/* Social Icons */}
+        <div className="footer-socials">
+          <a href="#" aria-label="Facebook"><FaFacebookF /></a>
+          <a href="#" aria-label="Twitter"><FaTwitter /></a>
+          <a href="#" aria-label="Instagram"><FaInstagram /></a>
+          <a href="mailto:info@satala.org" aria-label="Email"><FaEnvelope /></a>
         </div>
       </div>
 
+      {/* Bottom */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} SaTaLa. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} SaTaLa. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -33,18 +33,21 @@
 
 .adopt-btn {
      transition: 0.3s ease;
-  background-color: white;
-  color: #374331;
-  border: 1px solid #374331;
+  font-family: Century Gothic;
+  background-color: #374331;
+  color: white;
+  border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 20px;
+   border: 1px, solid,#374331 ;
 }
 
 .adopt-btn:hover {
-    transition: 0.3s ease-in-out;
-    background-color:#64785a;
-    color: white;
+       transition: 0.3s ease-in-out;
+    background-color: white;
+    color:  #374331;
+    border: 1px, solid, #374331;
 }
 
 .volunteer-btn {

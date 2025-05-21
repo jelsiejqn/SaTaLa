@@ -27,6 +27,8 @@ function App() {
         <Route path="/myevents" element={<MyEvents />} />
       </Routes>
 
+      <Footer />
+
     </Router>
 
 

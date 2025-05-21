@@ -16,6 +16,7 @@
 .home-h1 {
     font-family: Century Gothic;
     font-weight: 100;
+    color: white;
 }
 
 .home-hero::before {
@@ -264,8 +265,8 @@
 }
 
 .faq-image {
-  width: 300px;
-  height: 300px;
+  width: 270px;
+  height: 270px;
   object-fit: cover;
   margin-bottom: 12px;
 }

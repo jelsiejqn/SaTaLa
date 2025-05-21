@@ -46,9 +46,6 @@ const Navbar = () => {
           <button className="adopt-btn" onClick={() => navigate('/events')}>
             Events
           </button>
-          <button className="volunteer-btn" onClick={() => navigate('/signup')}>
-            Volunteer
-          </button>
           <button className="dev-btn" onClick={() => navigate('/developers')}>
             Developers
           </button>

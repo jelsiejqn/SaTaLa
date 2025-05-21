@@ -24,6 +24,7 @@ const developers = [
 
 const Developers = () => (
   <div className="developers-page">
+      <br/ >   <br/ >
     <h1>Meet the Developers</h1>
     <div className="dev-grid">
       {developers.map((dev, index) => (

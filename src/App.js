@@ -7,7 +7,7 @@ import SignUpForm from './SignupForm'; // Sign Up form
 import Events from './Events';
 import AdminDashboard from './AdminDashboard';
 import Developers from './Developers';
-import MyEvents from './MyEvents';
+import Dashboard from './Dashboard';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/developers" element={<Developers />} />
-        <Route path="/myevents" element={<MyEvents />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </Router>

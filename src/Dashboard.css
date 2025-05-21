@@ -1,0 +1,344 @@
+/* Dashboard.css */
+
+/* Extends your existing Home.css styles with dashboard-specific elements */
+
+/* Dashboard specific navigation */
+.dashboard-nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+}
+
+.sign-out-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sign-out-btn:hover {
+  background-color: white;
+  color: #2e7d32;
+}
+
+/* User Events Section */
+.dashboard-events {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.dashboard-events h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2e7d32;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.event-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-date {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.event-card h3 {
+  margin: 0 0 0.8rem;
+  color: #333;
+}
+
+.event-card p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.event-details-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.event-details-btn:hover {
+  background-color: #1b5e20;
+}
+
+.no-events {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.browse-events-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.browse-events-btn:hover {
+  background-color: #1b5e20;
+}
+
+/* Environmental Impact Section */
+.dashboard-impact {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem 3rem;
+}
+
+.dashboard-impact h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2e7d32;
+  font-size: 1.8rem;
+}
+
+.impact-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.impact-stat {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.impact-stat h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #2e7d32;
+}
+
+.impact-stat p {
+  margin: 0.5rem 0 1rem;
+  color: #666;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress {
+  height: 100%;
+  background-color: #2e7d32;
+  border-radius: 5px;
+}
+
+.goal-text {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-events {
+    padding: 1rem;
+  }
+  
+  .events-grid, 
+  .impact-stats {
+    grid-template-columns: 1fr;
+  }
+}
+.browse-events-btn:hover {
+  background-color: #1b5e20;
+}
+
+/* Quick Access Cards */
+.dashboard-quick-access {
+  background-color: #f5f5f5;
+  padding: 3rem 2rem;
+}
+
+.quick-access-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.quick-access-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.quick-access-card:hover {
+  transform: translateY(-5px);
+}
+
+.quick-access-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.quick-access-card h3 {
+  margin: 0 0 0.8rem;
+  color: #2e7d32;
+}
+
+.quick-access-card p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.quick-access-card button {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.quick-access-card button:hover {
+  background-color: #1b5e20;
+}
+
+/* Impact Section */
+.dashboard-impact {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.dashboard-impact h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2e7d32;
+  font-size: 1.8rem;
+}
+
+.impact-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.impact-stat {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.impact-stat h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #2e7d32;
+}
+
+.impact-stat p {
+  margin: 0.5rem 0 1rem;
+  color: #666;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress {
+  height: 100%;
+  background-color: #2e7d32;
+  border-radius: 5px;
+}
+
+.goal-text {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-hero-content {
+    padding: 0 2rem;
+  }
+  
+  .dashboard-h1 {
+    font-size: 2rem;
+  }
+  
+  .dashboard-stats {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+  
+  .stat-card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .events-grid, 
+  .quick-access-grid, 
+  .impact-stats {
+    grid-template-columns: 1fr;
+  }
+}
+

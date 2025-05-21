@@ -2,6 +2,7 @@ import React from 'react';
 import './Developers.css';
 import id1 from './assets/ID-Dionne.jpg'
 import id2 from './assets/ID-Jelsie.PNG'
+import id3 from './assets/ID-Jamie.jpg'
 
 const developers = [
   {
@@ -12,7 +13,7 @@ const developers = [
   {
     name: 'Hernandez, Jose Maria',
     role: 'Developer',
-    img: '/assets/devs/maria.jpg',
+    img: id3,
   },
     {
     name: 'Joaquin, Jelsie Kianna',

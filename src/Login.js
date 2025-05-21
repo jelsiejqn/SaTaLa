@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import './Login.css'; // Add styling for the login page
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
+import { supabase } from './supabaseClient';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Use useNavigate for navigation
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic form validation
@@ -18,11 +20,35 @@ const Login = () => {
       return;
     }
 
-    // Fake login validation (this should be replaced with actual authentication logic)
-    if (email === 'user@example.com' && password === 'password123') {
-      navigate('/'); // Redirect to the home page or any page after login
-    } else {
-      setError('Invalid credentials. Please try again.');
+    setLoading(true);
+    setError('');
+
+    try {
+      // Sign in with Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data && data.user) {
+        // Fetch user profile data
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('first_name')
+          .eq('id', data.user.id)
+          .single();
+
+        // Redirect to dashboard with user's first name
+        navigate('/dashboard', { 
+          state: { firstName: profileData?.first_name || 'User' } 
+        });
+      }
+    } catch (error) {
+      setError(error.message || 'Invalid credentials. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,6 +68,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              disabled={loading}
             />
           </div>
 
@@ -53,14 +80,17 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
+              disabled={loading}
             />
           </div>
 
-          <button type="submit" className="login-btn">Login</button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
 
         <p className="signup-link">
-          Don’t have an account? <a href="/signup">Sign up</a>
+          Don't have an account? <a href="/signup">Sign up</a>
         </p>
       </div>
     </div>

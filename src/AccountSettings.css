@@ -13,7 +13,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 1.5rem;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 }
@@ -38,7 +38,7 @@
   margin-top: 0.3rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 20px;
   font-size: 1rem;
 }
 
@@ -46,10 +46,10 @@
   display: block;
   width: 100%;
   padding: 0.6rem;
-  background-color: #007bff;
+  background-color: #374331;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
   margin-top: 1rem;
@@ -62,6 +62,6 @@
 
 .update-message {
   margin-top: 1rem;
-  color: green;
+  color: 374331;
   text-align: center;
 }

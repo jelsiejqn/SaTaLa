@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import './AccountSettings.css';
+import bg from './assets/bg.png'; // Make sure this path is correct
 
 const AccountSettings = () => {
   const [user, setUser] = useState(null);
@@ -77,7 +78,17 @@ const AccountSettings = () => {
   }
 
   return (
-    <div className="account-settings-container">
+    <div
+      className="account-settings-container"
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <div className="account-settings">
         <h2>Account Settings</h2>
         <div className="account-info">

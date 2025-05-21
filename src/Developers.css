@@ -1,6 +1,9 @@
 .developers-page {
   padding: 2rem;
   text-align: center;
+  height:60vh;
+  font-family: Century Gothic;
+
 }
 
 .dev-grid {

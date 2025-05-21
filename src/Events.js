@@ -20,7 +20,7 @@ const eventsData = [
     shortDescription: "Join us for a beach cleanup",
     description:
       "Help us make our community cleaner and greener! We'll be picking up trash and recyclables from the local beach. All cleaning supplies will be provided. Please wear comfortable clothes and bring water.",
-    image: {sample1},
+    image: sample1,
     date: "2025-06-15",
     time: "09:00 AM - 12:00 PM",
   },
@@ -30,7 +30,7 @@ const eventsData = [
     shortDescription: "Annual charity dinner",
     description:
       "Our annual fundraising gala is back! Join us for an evening of fine dining, entertainment, and the opportunity to support our cause. Formal attire is requested. Tickets include a three-course meal and drinks.",
-    image: {sample2},
+    image: sample2,
     date: "2025-07-20",
     time: "06:30 PM - 10:00 PM",
   },
@@ -40,7 +40,7 @@ const eventsData = [
     shortDescription: "Skills for the future",
     description:
       "A workshop designed to equip young people with essential skills for the future. Topics include digital literacy, financial management, and communication skills. Open to ages 14-18.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample3,
     date: "2025-06-28",
     time: "10:00 AM - 03:00 PM",
   },
@@ -50,7 +50,7 @@ const eventsData = [
     shortDescription: "5K for a cause",
     description:
       "Lace up your running shoes for our annual 5K charity run! All proceeds go directly to supporting our education initiatives. Participants will receive a t-shirt and refreshments.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample4,
     date: "2025-08-05",
     time: "07:00 AM - 10:00 AM",
   },
@@ -60,7 +60,7 @@ const eventsData = [
     shortDescription: "Local artists showcase",
     description:
       "Come appreciate the work of talented local artists at our exhibition. Various art forms will be on display, and some pieces will be available for purchase, with proceeds supporting the artists and our organization.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample5,
     date: "2025-07-10",
     time: "11:00 AM - 06:00 PM",
   },
@@ -70,7 +70,7 @@ const eventsData = [
     shortDescription: "Help stock local pantries",
     description:
       "Help us collect non-perishable food items for local food pantries. We're aiming to collect 1,000 items to help families in need. Drop-off points will be set up at various locations.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample6,
     date: "2025-06-22",
     time: "09:00 AM - 05:00 PM",
   },
@@ -80,7 +80,7 @@ const eventsData = [
     shortDescription: "Community gathering for seniors",
     description:
       "A special event for our senior community members. Join us for games, refreshments, and good company. Transportation can be arranged for those who need it.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample7,
     date: "2025-07-05",
     time: "02:00 PM - 04:30 PM",
   },
@@ -90,7 +90,7 @@ const eventsData = [
     shortDescription: "Learn about sustainability",
     description:
       "An informative session on environmental sustainability and how we can make a difference. Guest speakers include environmental scientists and local activists. Q&A session included.",
-    image: "/placeholder.svg?height=300&width=300",
+    image: sample8,
     date: "2025-08-15",
     time: "06:00 PM - 08:00 PM",
   },

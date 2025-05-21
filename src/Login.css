@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #eaf9e5; /* Light green background */
+  background-image: url(./assets/bg.png); /* Light green background */
   margin: 0;
 }
 
@@ -22,7 +22,7 @@
   font-weight: 600;
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #2d6a4f; /* Dark green text */
+  color: #374331; /* Dark green text */
   font-family: 'Roboto', sans-serif;
 }
 
@@ -32,7 +32,7 @@
 
 .input-group label {
   font-size: 1rem;
-  color: #2d6a4f; /* Dark green label */
+  color: #374331; /* Dark green label */
   margin-bottom: 0.5rem;
   display: block;
   font-family: 'Roboto', sans-serif;
@@ -42,7 +42,7 @@
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
-  border: 1px solid #66bb6a; /* Light green border */
+  border: 1px solid white; /* Light green border */
   border-radius: 20px;
   outline: none;
   background-color: #eaf9e5;
@@ -52,14 +52,14 @@
 
 /* ✅ Focused input — removes blue glow */
 .input-group input:focus {
-  border-color: #2d6a4f; /* Dark green border on focus */
+  border-color: #374331; /* Dark green border on focus */
   box-shadow: none;      /* Removes the default blue outline */
 }
 
 .login-btn {
   width: 100%;
   padding: 0.8rem;
-  background-color: #2d6a4f;
+  background-color: #374331;
   color: white;
   font-size: 1.1rem;
   border: none;
@@ -70,7 +70,7 @@
 }
 
 .login-btn:hover {
-  background-color: #1b5e20; /* Darker green on hover */
+  background-color: #374331; /* Darker green on hover */
 }
 
 .error-message {
@@ -82,16 +82,18 @@
 }
 
 .signup-link {
+  font-family: Century Gothic;
   text-align: center;
   margin-top: 1.5rem;
 }
 
 .signup-link a {
-  color: #2d6a4f;
+  color: #374331;
   text-decoration: none;
   font-size: 1rem;
 }
 
 .signup-link a:hover {
   text-decoration: none;
+  opacity: 60%;
 }

@@ -1,11 +1,13 @@
 import React from 'react';
 import './Developers.css';
+import id1 from './assets/ID-Dionne.jpg'
+import id2 from './assets/ID-Jelsie.PNG'
 
 const developers = [
   {
     name: 'Blacer, Dionne Catherine',
     role: 'Developer',
-    img: '/assets/devs/juan.jpg',
+    img: id1,
   },
   {
     name: 'Hernandez, Jose Maria',
@@ -15,7 +17,7 @@ const developers = [
     {
     name: 'Joaquin, Jelsie Kianna',
     role: 'Developer',
-    img: '/assets/devs/maria.jpg',
+    img: id2,
   }
 ];
 
@@ -33,5 +35,6 @@ const Developers = () => (
     </div>
   </div>
 );
+
 
 export default Developers;

@@ -218,7 +218,7 @@ body {
 }
 
 .cancel-button:hover {
-  opacity: 0%;
+  opacity: 60%;
 }
 
 /* Responsive adjustments */

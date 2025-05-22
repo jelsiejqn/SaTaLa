@@ -3,10 +3,96 @@
 import { useState, useEffect } from "react"
 import "./EventsManager.css"
 
+import sample1 from './assets/sample1.png'
+import sample2 from './assets/sample2.png'
+import sample3 from './assets/sample3.png'
+import sample4 from './assets/sample4.png'
+import sample5 from './assets/sample5.png'
+import sample7 from './assets/sample7.png'
+import sample8 from './assets/sample8.png'
+import sample6 from './assets/sample6.png'
+
+// Dummy events data
+const dummyEvents = [
+  {
+    id: 1,
+    title: "Beach Cleanup",
+    description: "Join us for the biggest tech event of the year featuring keynote speakers and workshops.",
+    date: "2025-06-15",
+    time: "09:00",
+    image: sample1,
+    createdAt: "2025-05-01T10:00:00Z",
+  },
+  {
+    id: 2,
+    title: "Charity Fundraiser Gala",
+    description: "An elegant evening to raise funds for local education initiatives with dinner and entertainment.",
+    date: "2025-07-22",
+    time: "18:30",
+    image: sample2,
+    createdAt: "2025-05-05T14:30:00Z",
+  },
+  {
+    id: 3,
+    title: "Summer Music Festival",
+    description:
+      "Three days of live music performances across multiple stages featuring local and international artists.",
+    date: "2025-08-10",
+    time: "12:00",
+    image: sample3,
+    createdAt: "2025-05-10T09:15:00Z",
+  },
+  {
+    id: 4,
+    title: "Startup Pitch Competition",
+    description: "Entrepreneurs showcase their innovative ideas to a panel of investors and industry experts.",
+    date: "2025-06-05",
+    time: "14:00",
+    image: sample4,
+    createdAt: "2025-05-12T11:45:00Z",
+  },
+  {
+    id: 5,
+    title: "Art Exhibition Opening",
+    description: "Featuring works from emerging local artists with a focus on contemporary themes and techniques.",
+    date: "2025-05-18",
+    time: "17:00",
+    image: sample5,
+    createdAt: "2025-04-25T16:20:00Z",
+  },
+  {
+    id: 6,
+    title: "Wellness Retreat Weekend",
+    description: "A rejuvenating weekend of yoga, meditation, and healthy living workshops in a peaceful setting.",
+    date: "2025-09-12",
+    time: "15:00",
+    image: sample6,
+    createdAt: "2025-05-15T08:30:00Z",
+  },
+  {
+    id: 7,
+    title: "Career Fair & Networking",
+    description:
+      "Connect with top employers and professionals in your industry for career opportunities and mentorship.",
+    date: "2025-07-08",
+    time: "10:00",
+    image: sample7,
+    createdAt: "2025-05-18T13:10:00Z",
+  },
+  {
+    id: 8,
+    title: "Food & Wine Festival",
+    description: "Sample culinary delights from award-winning chefs paired with fine wines from local vineyards.",
+    date: "2025-08-25",
+    time: "16:00",
+    image: sample8,
+    createdAt: "2025-05-20T15:45:00Z",
+  },
+]
 
 const EventsManager = () => {
   // State for events
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState(dummyEvents)
   const [filteredEvents, setFilteredEvents] = useState([])
 
   // State for form inputs

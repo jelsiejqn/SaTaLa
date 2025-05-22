@@ -98,7 +98,7 @@
   margin-top: 5px;
   width: 60px;
   height: 60px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 20px;
   font-family: Century Gothic;
 }
@@ -163,7 +163,7 @@
 .table-image {
   width: 60px;
   height: 60px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 20px;
 }
 

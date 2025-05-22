@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import "./EventsManager.css"
 
+
 const EventsManager = () => {
   // State for events
   const [events, setEvents] = useState([])

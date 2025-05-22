@@ -226,7 +226,7 @@ const VolunteerCount = () => {
               </div>
 
               <div className="modal-actions">
-                <button className="export-button">Export to CSV</button>
+                {/* <button className="export-button">Export to CSV</button> */}
                 <button className="close-modal-button" onClick={closeModal}>
                   Close
                 </button>

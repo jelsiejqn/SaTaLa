@@ -4,18 +4,21 @@ import bgImage from "./assets/home_bg.png"; // adjust path as needed
 import HomeStats from "./HomeStats";
 import EventsManager from "./EventsManager";
 import VolunteerCount from "./VolunteerCount";
+import FAQManager from "./FAQManager"; // Import the new FAQ Manager component
 
 const AdminDashboard = () => {
-  const [activeView, setActiveView] = useState("orgProgress");
+  const [activeView, setActiveView] = useState("eventsManager");
 
   const renderContent = () => {
     switch (activeView) {
-      case "orgProgress":
-        return <div> <br /> <br /> <br /> <br /> <HomeStats /> </div>;
+      // case "orgProgress":
+      //   return <div> <br /> <br /> <br /> <br /> <HomeStats /> </div>;
       case "eventsManager":
         return <div> <EventsManager /> </div>;
       case "volunteers":
         return <div> <br /><VolunteerCount /></div>;
+      case "faqManager":
+        return <div> <FAQManager /> </div>;
       default:
         return null;
     }
@@ -36,20 +39,19 @@ const AdminDashboard = () => {
         paddingTop: "80px",
       }}
     >
-        
       <div className="dashboard-container">
         {/* Sidebar */}
         <div className="sidebar">
           <h2 className="sidebar-title">Admin Dashboard</h2>
           <ul className="menu-list">
-            <li
+            {/* <li
               className={`menu-item ${
                 activeView === "orgProgress" ? "active" : ""
               }`}
               onClick={() => setActiveView("orgProgress")}
             >
               Progress
-            </li>
+            </li> */}
             <li
               className={`menu-item ${
                 activeView === "eventsManager" ? "active" : ""
@@ -65,6 +67,14 @@ const AdminDashboard = () => {
               onClick={() => setActiveView("volunteers")}
             >
               Volunteers
+            </li>
+            <li
+              className={`menu-item ${
+                activeView === "faqManager" ? "active" : ""
+              }`}
+              onClick={() => setActiveView("faqManager")}
+            >
+              FAQ Manager
             </li>
           </ul>
         </div>

@@ -1,114 +1,166 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createClient } from '@supabase/supabase-js'
 import "./Events.css"
 
-import sample1 from './assets/sample1.png'
-import sample2 from './assets/sample2.png'
-import sample3 from './assets/sample3.png'
-import sample4 from './assets/sample4.png'
-import sample5 from './assets/sample5.png'
-import sample7 from './assets/sample7.png'
-import sample8 from './assets/sample8.png'
-import sample6 from './assets/sample6.png'
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY
 
-// Sample event data - replace with your actual data
-const eventsData = [
-  {
-    id: 1,
-    title: "Community Cleanup",
-    shortDescription: "Join us for a beach cleanup",
-    description:
-      "Help us make our community cleaner and greener! We'll be picking up trash and recyclables from the local beach. All cleaning supplies will be provided. Please wear comfortable clothes and bring water.",
-    image: sample1,
-    date: "2025-06-15",
-    time: "09:00 AM - 12:00 PM",
-  },
-  {
-    id: 2,
-    title: "Fundraising Gala",
-    shortDescription: "Annual charity dinner",
-    description:
-      "Our annual fundraising gala is back! Join us for an evening of fine dining, entertainment, and the opportunity to support our cause. Formal attire is requested. Tickets include a three-course meal and drinks.",
-    image: sample2,
-    date: "2025-07-20",
-    time: "06:30 PM - 10:00 PM",
-  },
-  {
-    id: 3,
-    title: "Youth Workshop",
-    shortDescription: "Skills for the future",
-    description:
-      "A workshop designed to equip young people with essential skills for the future. Topics include digital literacy, financial management, and communication skills. Open to ages 14-18.",
-    image: sample3,
-    date: "2025-06-28",
-    time: "10:00 AM - 03:00 PM",
-  },
-  {
-    id: 4,
-    title: "Charity Run",
-    shortDescription: "5K for a cause",
-    description:
-      "Lace up your running shoes for our annual 5K charity run! All proceeds go directly to supporting our education initiatives. Participants will receive a t-shirt and refreshments.",
-    image: sample4,
-    date: "2025-08-05",
-    time: "07:00 AM - 10:00 AM",
-  },
-  {
-    id: 5,
-    title: "Art Exhibition",
-    shortDescription: "Local artists showcase",
-    description:
-      "Come appreciate the work of talented local artists at our exhibition. Various art forms will be on display, and some pieces will be available for purchase, with proceeds supporting the artists and our organization.",
-    image: sample5,
-    date: "2025-07-10",
-    time: "11:00 AM - 06:00 PM",
-  },
-  {
-    id: 6,
-    title: "Food Drive",
-    shortDescription: "Help stock local pantries",
-    description:
-      "Help us collect non-perishable food items for local food pantries. We're aiming to collect 1,000 items to help families in need. Drop-off points will be set up at various locations.",
-    image: sample6,
-    date: "2025-06-22",
-    time: "09:00 AM - 05:00 PM",
-  },
-  {
-    id: 7,
-    title: "Senior Social",
-    shortDescription: "Community gathering for seniors",
-    description:
-      "A special event for our senior community members. Join us for games, refreshments, and good company. Transportation can be arranged for those who need it.",
-    image: sample7,
-    date: "2025-07-05",
-    time: "02:00 PM - 04:30 PM",
-  },
-  {
-    id: 8,
-    title: "Environmental Talk",
-    shortDescription: "Learn about sustainability",
-    description:
-      "An informative session on environmental sustainability and how we can make a difference. Guest speakers include environmental scientists and local activists. Q&A session included.",
-    image: sample8,
-    date: "2025-08-15",
-    time: "06:00 PM - 08:00 PM",
-  },
-]
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing Supabase environment variables. Please check your .env.local file.')
+  throw new Error('Supabase configuration is missing')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 function Events() {
-  const [events, setEvents] = useState(eventsData)
+  const [events, setEvents] = useState([])
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [sortOrder, setSortOrder] = useState("nearest")
   const [isFlipping, setIsFlipping] = useState(false)
   const [flippedCardId, setFlippedCardId] = useState(null)
+  const [loading, setLoading] = useState(true)
+  
+  // User authentication state
+  const [user, setUser] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
+  const [loadingUserData, setLoadingUserData] = useState(false)
+  
+  // Volunteer form state
+  const [isVolunteerFormOpen, setIsVolunteerFormOpen] = useState(false)
+  const [volunteerData, setVolunteerData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    isGuest: false
+  })
+  const [submittingVolunteer, setSubmittingVolunteer] = useState(false)
+
+  // Check authentication status and fetch user data
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      
+      if (user) {
+        await fetchUserProfile(user.id)
+      }
+    }
+
+    getUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null)
+      if (session?.user) {
+        fetchUserProfile(session.user.id)
+      } else {
+        setUserProfile(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  // Fetch user profile data
+  const fetchUserProfile = async (userId) => {
+    try {
+      setLoadingUserData(true)
+      
+      // Try to fetch from a users/profiles table first
+      const { data: profileData, error: profileError } = await supabase
+        .from('users') // or 'profiles' depending on your table name
+        .select('*')
+        .eq('id', userId)
+        .single()
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.error('Error fetching user profile:', profileError)
+        // Fallback to auth user data
+        const { data: { user } } = await supabase.auth.getUser()
+        setUserProfile({
+          name: user?.user_metadata?.full_name || user?.email?.split('@')[0] || '',
+          email: user?.email || '',
+          phone: user?.user_metadata?.phone || user?.phone || ''
+        })
+      } else if (profileData) {
+        setUserProfile({
+          name: profileData.full_name || profileData.name || '',
+          email: profileData.email || '',
+          phone: profileData.phone || ''
+        })
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+      // Fallback to basic auth data
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setUserProfile({
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || '',
+          email: user.email || '',
+          phone: user.user_metadata?.phone || user.phone || ''
+        })
+      }
+    } finally {
+      setLoadingUserData(false)
+    }
+  }
+
+  // Fetch events from Supabase
+  const fetchEvents = async () => {
+    try {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: true })
+
+      if (error) {
+        console.error('Error fetching events:', error)
+        return
+      }
+
+      // Filter out past events for the public view
+      const currentDate = new Date()
+      const activeEvents = data?.filter(event => {
+        const eventDateTime = new Date(`${event.date}T${event.time}`)
+        return eventDateTime >= currentDate
+      }) || []
+
+      setEvents(activeEvents)
+    } catch (error) {
+      console.error('Error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Initial fetch and set up real-time subscription
+  useEffect(() => {
+    fetchEvents()
+
+    // Subscribe to changes in the events table
+    const eventsSubscription = supabase
+      .channel('events_public')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, (payload) => {
+        console.log('Public: Database change received!', payload)
+        fetchEvents()
+      })
+      .subscribe()
+
+    return () => {
+      eventsSubscription.unsubscribe()
+    }
+  }, [])
 
   // Sort events based on the selected sort order
   useEffect(() => {
-    const sortedEvents = [...eventsData].sort((a, b) => {
-      const dateA = new Date(a.date)
-      const dateB = new Date(b.date)
+    const sortedEvents = [...events].sort((a, b) => {
+      const dateA = new Date(`${a.date}T${a.time}`)
+      const dateB = new Date(`${b.date}T${b.time}`)
       return sortOrder === "nearest" ? dateA - dateB : dateB - dateA
     })
     setEvents(sortedEvents)
@@ -122,7 +174,6 @@ function Events() {
     setFlippedCardId(event.id)
     setIsFlipping(true)
 
-    // Set a timeout to show the modal after the flip animation starts
     setTimeout(() => {
       setSelectedEvent(event)
       setIsModalOpen(true)
@@ -133,18 +184,144 @@ function Events() {
   const closeModal = () => {
     setIsModalOpen(false)
     setFlippedCardId(null)
+    setIsVolunteerFormOpen(false)
+    setVolunteerData({
+      name: '',
+      email: '',
+      phone: '',
+      isGuest: false
+    })
   }
 
-  const handleVolunteer = (isGuest) => {
-    alert(`You've signed up to volunteer${isGuest ? " as a guest" : ""} for "${selectedEvent.title}"!`)
-    closeModal()
+  // Open volunteer form - simplified logic
+  const handleVolunteerClick = () => {
+    if (user && userProfile) {
+      // Logged-in user: auto-populate with their data
+      setVolunteerData({
+        name: userProfile.name || '',
+        email: userProfile.email || '',
+        phone: userProfile.phone || '',
+        isGuest: false
+      })
+    } else {
+      // Not logged in: empty form as guest
+      setVolunteerData({
+        name: '',
+        email: '',
+        phone: '',
+        isGuest: true
+      })
+    }
+    setIsVolunteerFormOpen(true)
+  }
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setVolunteerData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  // Submit volunteer registration
+  const handleVolunteerSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!volunteerData.name.trim() || !volunteerData.email.trim()) {
+      alert('Please fill in your name and email')
+      return
+    }
+
+    try {
+      setSubmittingVolunteer(true)
+      
+      // Check if user already volunteered for this event
+      const { data: existingVolunteer, error: checkError } = await supabase
+        .from('volunteers')
+        .select('*')
+        .eq('event_id', selectedEvent.id)
+        .eq('email', volunteerData.email.trim())
+        .single()
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        // PGRST116 is "no rows returned" - that's what we want
+        throw checkError
+      }
+
+      if (existingVolunteer) {
+        alert('You have already registered as a volunteer for this event!')
+        return
+      }
+
+      // Insert volunteer data with all required fields for VolunteerCount display
+      const { data, error } = await supabase
+        .from('volunteers')
+        .insert([
+          {
+            event_id: selectedEvent.id,
+            event_title: selectedEvent.title,
+            name: volunteerData.name.trim(),
+            email: volunteerData.email.trim(),
+            phone: volunteerData.phone.trim() || null,
+            is_guest: volunteerData.isGuest,
+            user_id: !volunteerData.isGuest && user ? user.id : null, // Link to user if logged in member
+            created_at: new Date().toISOString()
+          }
+        ])
+        .select()
+
+      if (error) {
+        throw error
+      }
+
+      console.log('Volunteer registered successfully:', data)
+      console.log('✅ This volunteer data will now appear in VolunteerCount component')
+      
+      alert(`Thank you for volunteering${volunteerData.isGuest ? ' as a guest' : ''} for "${selectedEvent.title}"!\n\nYour registration will appear in the admin volunteer dashboard.`)
+      closeModal()
+
+      // Trigger custom event for immediate VolunteerCount update
+      window.dispatchEvent(new CustomEvent('volunteerRegistered', { 
+        detail: { 
+          eventId: selectedEvent.id, 
+          volunteerData: data[0],
+          eventTitle: selectedEvent.title
+        } 
+      }))
+
+    } catch (error) {
+      console.error('Error registering volunteer:', error)
+      alert('Error registering volunteer: ' + error.message)
+    } finally {
+      setSubmittingVolunteer(false)
+    }
+  }
+
+  // Format time for display
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':')
+    const hour = parseInt(hours)
+    const ampm = hour >= 12 ? 'PM' : 'AM'
+    const displayHour = hour % 12 || 12
+    return `${displayHour}:${minutes} ${ampm}`
+  }
+
+  const formatEventTime = (time) => {
+    return formatTime(time)
+  }
+
+  if (loading) {
+    return (
+      <div className="events-container">
+        <div className="loading-spinner">Loading events...</div>
+      </div>
+    )
   }
 
   return (
-   
-
     <div className="events-container">
-      <h1 className="events-title">Events</h1>
+      <h1 className="events-title">Upcoming Events</h1>
 
       <div className="sort-container">
         <label htmlFor="sort-select">Sort by: </label>
@@ -154,26 +331,33 @@ function Events() {
         </select>
       </div>
 
-      <div className="events-grid">
-        {events.map((event) => (
-          <div
-            key={event.id}
-            className={`event-card ${flippedCardId === event.id ? "flipping" : ""}`}
-            onClick={() => handleCardClick(event)}
-          >
-            <div className="polaroid">
-              <div className="polaroid-image">
-                <img src={event.image || "/placeholder.svg"} alt={event.title} />
-              </div>
-              <div className="polaroid-content">
-                <h3>{event.title}</h3>
-                <p>{event.shortDescription}</p>
-                <span className="event-date">{new Date(event.date).toLocaleDateString()}</span>
+      {events.length === 0 ? (
+        <div className="no-events-message">
+          <h2>No upcoming events</h2>
+          <p>Check back soon for new events!</p>
+        </div>
+      ) : (
+        <div className="events-grid">
+          {events.map((event) => (
+            <div
+              key={event.id}
+              className={`event-card ${flippedCardId === event.id ? "flipping" : ""}`}
+              onClick={() => handleCardClick(event)}
+            >
+              <div className="polaroid">
+                <div className="polaroid-image">
+                  <img src={event.image || "/api/placeholder/300/200"} alt={event.title} />
+                </div>
+                <div className="polaroid-content">
+                  <h3>{event.title}</h3>
+                  <p>{event.short_description}</p>
+                  <span className="event-date">{new Date(event.date).toLocaleDateString()}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {isModalOpen && selectedEvent && (
         <div className="modal-overlay" onClick={closeModal}>
@@ -183,27 +367,141 @@ function Events() {
             </button>
             <div className="modal-grid">
               <div className="modal-image">
-                <img src={selectedEvent.image || "/placeholder.svg"} alt={selectedEvent.title} />
+                <img src={selectedEvent.image || "/api/placeholder/400/300"} alt={selectedEvent.title} />
               </div>
               <div className="modal-details">
                 <h2>{selectedEvent.title}</h2>
                 <p className="modal-description">{selectedEvent.description}</p>
                 <div className="modal-datetime">
                   <p>
-                    <strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}
+                    <strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                   </p>
                   <p>
-                    <strong>Time:</strong> {selectedEvent.time}
+                    <strong>Time:</strong> {formatEventTime(selectedEvent.time)}
                   </p>
                 </div>
-                <div className="modal-buttons">
-                  <button className="volunteer-button" onClick={() => handleVolunteer(false)}>
-                    Volunteer
-                  </button>
-                  <button className="volunteer-guest-button" onClick={() => handleVolunteer(true)}>
-                    Volunteer as a Guest
-                  </button>
-                </div>
+
+                {!isVolunteerFormOpen ? (
+                  <div className="modal-buttons">
+                    <button 
+                      className="volunteer-button" 
+                      onClick={handleVolunteerClick}
+                      disabled={loadingUserData}
+                    >
+                      {loadingUserData ? 'Loading...' : (user ? 'Volunteer' : 'Volunteer (Guest)')}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="volunteer-form-container">
+                    <h3>Volunteer Registration</h3>
+                    <div className="volunteer-status">
+                      {user ? (
+                        <div className="member-status">
+                          <span className="status-badge member">✓ Registered Member</span>
+                          <p className="status-description">Your information has been pre-filled from your profile</p>
+                        </div>
+                      ) : (
+                        <div className="guest-status">
+                          <span className="status-badge guest">👤 Guest Registration</span>
+                          <p className="status-description">You're volunteering as a guest. Consider creating an account for easier future registrations!</p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <form onSubmit={handleVolunteerSubmit} className="volunteer-form">
+                      <div className="form-group">
+                        <label htmlFor="volunteer-name">Full Name *</label>
+                        <input
+                          type="text"
+                          id="volunteer-name"
+                          name="name"
+                          value={volunteerData.name}
+                          onChange={handleInputChange}
+                          placeholder="Enter your full name"
+                          required
+                          disabled={loadingUserData}
+                          readOnly={user && !volunteerData.isGuest && volunteerData.name}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            marginTop: '4px',
+                            backgroundColor: (user && !volunteerData.isGuest && volunteerData.name) ? '#f8f9fa' : 'white',
+                            cursor: (user && !volunteerData.isGuest && volunteerData.name) ? 'not-allowed' : 'text'
+                          }}
+                        />
+                        {user && !volunteerData.isGuest && volunteerData.name && (
+                          <small style={{ color: '#666', fontSize: '0.8em' }}>Auto-filled from your profile</small>
+                        )}
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="volunteer-email">Email *</label>
+                        <input
+                          type="email"
+                          id="volunteer-email"
+                          name="email"
+                          value={volunteerData.email}
+                          onChange={handleInputChange}
+                          placeholder="Enter your email"
+                          required
+                          disabled={loadingUserData}
+                          readOnly={user && !volunteerData.isGuest && volunteerData.email}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            border: '1px solid #ddd',
+                            borderRadius: '4px',
+                            marginTop: '4px',
+                            backgroundColor: (user && !volunteerData.isGuest && volunteerData.email) ? '#f8f9fa' : 'white',
+                            cursor: (user && !volunteerData.isGuest && volunteerData.email) ? 'not-allowed' : 'text'
+                          }}
+                        />
+                        {user && !volunteerData.isGuest && volunteerData.email && (
+                          <small style={{ color: '#666', fontSize: '0.8em' }}>Auto-filled from your profile</small>
+                        )}
+                      </div>
+
+                      <div className="form-buttons" style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                        <button
+                          type="submit"
+                          disabled={submittingVolunteer || loadingUserData}
+                          style={{
+                            backgroundColor: '#28a745',
+                            color: 'white',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: (submittingVolunteer || loadingUserData) ? 'not-allowed' : 'pointer',
+                            opacity: (submittingVolunteer || loadingUserData) ? 0.6 : 1
+                          }}
+                        >
+                          {submittingVolunteer ? 'Registering...' : loadingUserData ? 'Loading...' : 'Register as Volunteer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setIsVolunteerFormOpen(false)}
+                          style={{
+                            backgroundColor: '#6c757d',
+                            color: 'white',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
               </div>
             </div>
           </div>

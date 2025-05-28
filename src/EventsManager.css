@@ -1,3 +1,6 @@
+*{
+  overflow-y: visible;
+}
 .events-manager {
   width: 100%;
   max-width: 100%;

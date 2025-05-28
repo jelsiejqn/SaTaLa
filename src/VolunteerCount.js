@@ -1,240 +1,568 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./VolunteerCount.css"
+import { createClient } from '@supabase/supabase-js'
 
-import sample1 from './assets/sample1.png'
-import sample2 from './assets/sample2.png'
-import sample3 from './assets/sample3.png'
-import sample4 from './assets/sample4.png'
-import sample5 from './assets/sample5.png'
-import sample7 from './assets/sample7.png'
-import sample8 from './assets/sample8.png'
-import sample6 from './assets/sample6.png'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing Supabase environment variables')
+  throw new Error('Supabase configuration is missing')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 const VolunteerCount = () => {
-  // Sample data - in a real app, this would come from your database
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: "Community Cleanup",
-      date: "2025-06-15",
-      time: "09:00 AM",
-      image: sample1,
-      volunteerCount: 24,
-      volunteers: [
-        { name: "John Doe", email: "john@example.com", isGuest: false, registeredAt: "2025-05-20T14:30:00" },
-        { name: "Jane Smith", email: "jane@example.com", isGuest: true, registeredAt: "2025-05-21T10:15:00" },
-        { name: "Robert Johnson", email: "robert@example.com", isGuest: false, registeredAt: "2025-05-22T09:45:00" },
-        // More volunteers...
-      ],
-    },
-    {
-      id: 2,
-      title: "Fundraising Gala",
-      date: "2025-07-20",
-      time: "06:30 PM",
-      image: sample2,
-      volunteerCount: 12,
-      volunteers: [
-        { name: "Emily Wilson", email: "emily@example.com", isGuest: false, registeredAt: "2025-06-10T11:20:00" },
-        { name: "Michael Brown", email: "michael@example.com", isGuest: true, registeredAt: "2025-06-12T15:40:00" },
-        // More volunteers...
-      ],
-    },
-    {
-      id: 3,
-      title: "Youth Workshop",
-      date: "2025-06-28",
-      time: "10:00 AM",
-      image: sample3,
-      volunteerCount: 8,
-      volunteers: [
-        { name: "Sarah Johnson", email: "sarah@example.com", isGuest: false, registeredAt: "2025-06-01T09:30:00" },
-        { name: "David Lee", email: "david@example.com", isGuest: false, registeredAt: "2025-06-02T14:15:00" },
-        // More volunteers...
-      ],
-    },
-    {
-      id: 4,
-      title: "Charity Run",
-      date: "2025-08-05",
-      time: "07:00 AM",
-      image: sample4,
-      volunteerCount: 35,
-      volunteers: [
-        { name: "Lisa Chen", email: "lisa@example.com", isGuest: true, registeredAt: "2025-07-10T08:45:00" },
-        { name: "Kevin Wang", email: "kevin@example.com", isGuest: false, registeredAt: "2025-07-11T16:20:00" },
-        // More volunteers...
-      ],
-    },
-    {
-      id: 5,
-      title: "Art Exhibition",
-      date: "2025-07-10",
-      time: "11:00 AM",
-      image: sample5,
-      volunteerCount: 15,
-      volunteers: [
-        { name: "Amanda Taylor", email: "amanda@example.com", isGuest: false, registeredAt: "2025-06-15T13:10:00" },
-        { name: "Brian Miller", email: "brian@example.com", isGuest: true, registeredAt: "2025-06-16T10:30:00" },
-        // More volunteers...
-      ],
-    },
-    {
-      id: 6,
-      title: "Food Drive",
-      date: "2025-06-22",
-      time: "09:00 AM",
-      image: sample6,
-      volunteerCount: 18,
-      volunteers: [
-        { name: "Nicole Adams", email: "nicole@example.com", isGuest: false, registeredAt: "2025-05-30T11:45:00" },
-        { name: "Thomas Wilson", email: "thomas@example.com", isGuest: true, registeredAt: "2025-06-01T09:20:00" },
-        // More volunteers...
-      ],
-    },
-  ])
-
-  const [sortOrder, setSortOrder] = useState("newest")
+  const [eventsWithVolunteers, setEventsWithVolunteers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [sortedEvents, setSortedEvents] = useState([])
 
-  // Sort events whenever the sort order changes
-  useEffect(() => {
-    const sorted = [...events].sort((a, b) => {
-      const dateA = new Date(`${a.date}T${a.time}`)
-      const dateB = new Date(`${b.date}T${b.time}`)
-      return sortOrder === "newest" ? dateB - dateA : dateA - dateB
-    })
-    setSortedEvents(sorted)
-  }, [events, sortOrder])
+  // Fetch all events and their volunteer counts
+  const fetchEventsAndVolunteers = async () => {
+    try {
+      setLoading(true)
+      setError(null)
 
-  // Handle sort change
-  const handleSortChange = (e) => {
-    setSortOrder(e.target.value)
+      console.log('Fetching events...')
+      
+      // First, get all events
+      const { data: events, error: eventsError } = await supabase
+        .from('events')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (eventsError) {
+        throw eventsError
+      }
+
+      console.log('Events fetched:', events)
+
+      if (!events || events.length === 0) {
+        setEventsWithVolunteers([])
+        setLoading(false)
+        return
+      }
+
+      // For each event, get volunteer count and volunteer details
+      const eventsWithVolunteerData = await Promise.all(
+        events.map(async (event) => {
+          console.log(`Fetching volunteers for event ID: ${event.id}`)
+          
+          const { data: volunteers, error: volunteersError } = await supabase
+            .from('volunteers')
+            .select('*')
+            .eq('event_id', event.id)
+            .order('created_at', { ascending: false })
+
+          if (volunteersError) {
+            console.error(`Error fetching volunteers for event ${event.id}:`, volunteersError)
+            return {
+              ...event,
+              volunteerCount: 0,
+              volunteers: []
+            }
+          }
+
+          console.log(`Volunteers for event ${event.id}:`, volunteers)
+
+          return {
+            ...event,
+            volunteerCount: volunteers ? volunteers.length : 0,
+            volunteers: volunteers || []
+          }
+        })
+      )
+
+      console.log('Final events with volunteers:', eventsWithVolunteerData)
+      setEventsWithVolunteers(eventsWithVolunteerData)
+
+    } catch (error) {
+      console.error('Error in fetchEventsAndVolunteers:', error)
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  // Open modal with event details
-  const handleEventClick = (event) => {
-    setSelectedEvent(event)
+  // Load data on component mount
+  useEffect(() => {
+    fetchEventsAndVolunteers()
+  }, [])
+
+  // Set up real-time subscriptions and event listeners
+  useEffect(() => {
+    console.log('Setting up real-time subscriptions...')
+
+    const eventsChannel = supabase
+      .channel('events-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'events'
+      }, (payload) => {
+        console.log('Events table changed:', payload)
+        fetchEventsAndVolunteers()
+      })
+      .subscribe()
+
+    const volunteersChannel = supabase
+      .channel('volunteers-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'volunteers'
+      }, (payload) => {
+        console.log('Volunteers table changed:', payload)
+        fetchEventsAndVolunteers()
+      })
+      .subscribe()
+
+    // Listen for custom volunteer registration events from Events component
+    const handleVolunteerRegistered = (event) => {
+      console.log('New volunteer registered via Events component:', event.detail)
+      fetchEventsAndVolunteers()
+    }
+
+    window.addEventListener('volunteerRegistered', handleVolunteerRegistered)
+
+    return () => {
+      console.log('Cleaning up subscriptions...')
+      eventsChannel.unsubscribe()
+      volunteersChannel.unsubscribe()
+      window.removeEventListener('volunteerRegistered', handleVolunteerRegistered)
+    }
+  }, [])
+
+  const handleEventClick = (eventData) => {
+    console.log('Event clicked:', eventData)
+    setSelectedEvent(eventData)
     setIsModalOpen(true)
   }
 
-  // Close modal
   const closeModal = () => {
     setIsModalOpen(false)
+    setSelectedEvent(null)
   }
 
-  // Format date for display
   const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" }
-    return new Date(dateString).toLocaleDateString(undefined, options)
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    } catch {
+      return dateString
+    }
   }
 
-  // Format registration date and time
-  const formatRegistrationDateTime = (dateTimeString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+  const formatDateTime = (dateTimeString) => {
+    try {
+      return new Date(dateTimeString).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    } catch {
+      return dateTimeString
     }
-    return new Date(dateTimeString).toLocaleString(undefined, options)
+  }
+
+  const exportToCSV = () => {
+    if (!selectedEvent?.volunteers?.length) {
+      alert('No volunteers to export')
+      return
+    }
+
+    const headers = ['Name', 'Email', 'Status', 'Registration Date']
+    const rows = selectedEvent.volunteers.map(volunteer => [
+      volunteer.name || 'N/A',
+      volunteer.email || 'N/A',
+      volunteer.is_guest ? 'Guest' : 'Member',
+      formatDateTime(volunteer.created_at)
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${selectedEvent.title?.replace(/[^a-z0-9]/gi, '_') || 'event'}_volunteers.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  if (loading) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center' }}>
+        <div style={{
+          width: '50px',
+          height: '50px',
+          border: '5px solid #f3f3f3',
+          borderTop: '5px solid #3498db',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          margin: '0 auto 20px'
+        }}></div>
+        <p>Loading events and volunteers...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center', color: '#e74c3c' }}>
+        <h3>Error Loading Data</h3>
+        <p>{error}</p>
+        <button 
+          onClick={fetchEventsAndVolunteers}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#3498db',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginTop: '15px'
+          }}
+        >
+          Retry
+        </button>
+      </div>
+    )
   }
 
   return (
-    <div className="volunteer-count-container">
-      <div className="volunteer-header">
-        <h2>Event Volunteer Count</h2>
-        <div className="sort-control">
-          <label htmlFor="sort-select">Sort by: </label>
-          <select id="sort-select" value={sortOrder} onChange={handleSortChange}>
-            <option value="newest">Most Recent</option>
-            <option value="oldest">Oldest</option>
-          </select>
-        </div>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      {/* Header */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '30px',
+        borderBottom: '2px solid #ecf0f1',
+        paddingBottom: '15px'
+      }}>
+        <h1 style={{ margin: 0, color: '#2c3e50' }}>
+          Event Volunteer Management ({eventsWithVolunteers.length} events)
+        </h1>
+        <button 
+          onClick={fetchEventsAndVolunteers}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#27ae60',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Refresh Data
+        </button>
       </div>
 
-      <div className="event-cards-container">
-        {sortedEvents.map((event) => (
-          <div key={event.id} className="event-card" onClick={() => handleEventClick(event)}>
-            <div className="event-image">
-              <img src={event.image || "/placeholder.svg"} alt={event.title} />
-            </div>
-            <div className="event-details">
-              <h3>{event.title}</h3>
-              <p className="event-date">
-                {formatDate(event.date)} at {event.time}
-              </p>
-              <div className="volunteer-number">
-                <span>{event.volunteerCount}</span>
-                <p>Volunteers</p>
+      {/* Events Grid */}
+      {eventsWithVolunteers.length === 0 ? (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '60px 20px',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '10px'
+        }}>
+          <h3 style={{ color: '#6c757d' }}>No Events Found</h3>
+          <p style={{ color: '#6c757d' }}>Create some events to see volunteer data here.</p>
+        </div>
+      ) : (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+          gap: '25px',
+          marginBottom: '30px'
+        }}>
+          {eventsWithVolunteers.map((event) => (
+            <div
+              key={event.id}
+              onClick={() => handleEventClick(event)}
+              style={{
+                border: '1px solid #ddd',
+                borderRadius: '12px',
+                padding: '20px',
+                backgroundColor: 'white',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-5px)'
+                e.target.style.boxShadow = '0 4px 16px rgba(0,0,0,0.15)'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)'
+                e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+            >
+              {/* Event Image */}
+              {event.image && (
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  style={{
+                    width: '100%',
+                    height: '180px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    marginBottom: '15px'
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none'
+                  }}
+                />
+              )}
+
+              {/* Event Details */}
+              <h3 style={{ 
+                margin: '0 0 10px 0', 
+                color: '#2c3e50',
+                fontSize: '18px'
+              }}>
+                {event.title || 'Untitled Event'}
+              </h3>
+
+              {event.date && (
+                <p style={{ 
+                  margin: '0 0 15px 0', 
+                  color: '#7f8c8d',
+                  fontSize: '14px'
+                }}>
+                  📅 {formatDate(event.date)} {event.time && `at ${event.time}`}
+                </p>
+              )}
+
+              {/* Volunteer Count Badge */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <div style={{
+                  backgroundColor: event.volunteerCount > 0 ? '#27ae60' : '#95a5a6',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}>
+                  👥 {event.volunteerCount} Volunteer{event.volunteerCount !== 1 ? 's' : ''}
+                </div>
+                
+                <div style={{ 
+                  color: '#3498db', 
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  Click to view →
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
+      {/* Modal */}
       {isModalOpen && selectedEvent && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={closeModal}>
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000
+          }}
+          onClick={closeModal}
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              padding: '30px',
+              maxWidth: '900px',
+              maxHeight: '80vh',
+              width: '90%',
+              overflow: 'auto',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              style={{
+                position: 'absolute',
+                top: '15px',
+                right: '20px',
+                background: 'none',
+                border: 'none',
+                fontSize: '24px',
+                cursor: 'pointer',
+                color: '#7f8c8d'
+              }}
+            >
               ×
             </button>
 
-            <div className="modal-header">
-              <h2>{selectedEvent.title}</h2>
-              <p className="modal-date">
-                {formatDate(selectedEvent.date)} at {selectedEvent.time}
-              </p>
-              <div className="volunteer-count-badge">
-                <span>{selectedEvent.volunteerCount}</span> Volunteers
+            {/* Modal Header */}
+            <div style={{ marginBottom: '25px' }}>
+              <h2 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>
+                {selectedEvent.title}
+              </h2>
+              {selectedEvent.date && (
+                <p style={{ margin: '0 0 15px 0', color: '#7f8c8d' }}>
+                  📅 {formatDate(selectedEvent.date)} {selectedEvent.time && `at ${selectedEvent.time}`}
+                </p>
+              )}
+              <div style={{
+                backgroundColor: '#3498db',
+                color: 'white',
+                padding: '10px 20px',
+                borderRadius: '25px',
+                display: 'inline-block',
+                fontSize: '16px',
+                fontWeight: 'bold'
+              }}>
+                👥 {selectedEvent.volunteerCount} Total Volunteer{selectedEvent.volunteerCount !== 1 ? 's' : ''}
               </div>
             </div>
 
-            <div className="volunteer-list-container">
-              <h3>Volunteer List</h3>
+            {/* Volunteers List */}
+            <div>
+              <h3 style={{ color: '#2c3e50', marginBottom: '20px' }}>
+                Volunteer List
+              </h3>
 
-              <div className="volunteer-table-container">
-                <table className="volunteer-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Status</th>
-                      <th>Registration Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedEvent.volunteers.map((volunteer, index) => (
-                      <tr key={index}>
-                        <td>{volunteer.name}</td>
-                        <td>{volunteer.email}</td>
-                        <td>
-                          <span className={volunteer.isGuest ? "guest-badge" : "member-badge"}>
-                            {volunteer.isGuest ? "Guest" : "Member"}
-                          </span>
-                        </td>
-                        <td>{formatRegistrationDateTime(volunteer.registeredAt)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              {!selectedEvent.volunteers || selectedEvent.volunteers.length === 0 ? (
+                <div style={{
+                  padding: '40px',
+                  textAlign: 'center',
+                  backgroundColor: '#f8f9fa',
+                  borderRadius: '8px',
+                  color: '#6c757d'
+                }}>
+                  <p>No volunteers registered for this event yet.</p>
+                </div>
+              ) : (
+                <>
+                  {/* Export Button */}
+                  <div style={{ marginBottom: '20px', textAlign: 'right' }}>
+                    <button
+                      onClick={exportToCSV}
+                      style={{
+                        padding: '8px 16px',
+                        backgroundColor: '#27ae60',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      📊 Export to CSV
+                    </button>
+                  </div>
 
-              <div className="modal-actions">
-                {/* <button className="export-button">Export to CSV</button> */}
-                <button className="close-modal-button" onClick={closeModal}>
-                  Close
-                </button>
-              </div>
+                  {/* Volunteers Table */}
+                  <div style={{ overflow: 'auto' }}>
+                    <table style={{
+                      width: '100%',
+                      borderCollapse: 'collapse',
+                      border: '1px solid #ddd'
+                    }}>
+                      <thead>
+                        <tr style={{ backgroundColor: '#f8f9fa' }}>
+                          <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Name</th>
+                          <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Email</th>
+                          {/* <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Phone</th> */}
+                          <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Status</th>
+                          <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Registered</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedEvent.volunteers.map((volunteer, index) => (
+                          <tr key={volunteer.id || index} style={{ borderBottom: '1px solid #eee' }}>
+                            <td style={{ padding: '12px' }}>{volunteer.name || 'N/A'}</td>
+                            <td style={{ padding: '12px' }}>{volunteer.email || 'N/A'}</td>
+                            {/* <td style={{ padding: '12px' }}>{volunteer.phone || 'N/A'}</td> */}
+                            <td style={{ padding: '12px' }}>
+                              <span style={{
+                                padding: '4px 8px',
+                                borderRadius: '12px',
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                                backgroundColor: volunteer.is_guest ? '#f39c12' : '#27ae60',
+                                color: 'white'
+                              }}>
+                                {volunteer.is_guest ? 'Guest' : 'Member'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '12px', fontSize: '14px', color: '#7f8c8d' }}>
+                              {formatDateTime(volunteer.created_at)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ 
+              marginTop: '30px', 
+              textAlign: 'center',
+              borderTop: '1px solid #eee',
+              paddingTop: '20px'
+            }}>
+              <button
+                onClick={closeModal}
+                style={{
+                  padding: '10px 30px',
+                  backgroundColor: '#95a5a6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Add CSS animation */}
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   )
 }

@@ -24,24 +24,19 @@ export default function SignUpForm() {
 
   const validateForm = () => {
     const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!formData.firstName) newErrors.firstName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.email) newErrors.email = "Email is required";
+    else if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
+
     if (!formData.password) newErrors.password = "Password is required";
+    else if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+
     if (!formData.confirmPassword) newErrors.confirmPassword = "Please confirm your password";
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.email && !emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
+    else if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
-    }
 
     return newErrors;
   };
@@ -49,57 +44,49 @@ export default function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
-
-    if (Object.keys(validationErrors).length === 0) {
-      setLoading(true);
-      setErrors({});
-      
-      try {
-        // 1. Register the user with Supabase Auth
-        const { data: authData, error: authError } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-        });
-
-        if (authError) throw authError;
-
-        if (authData && authData.user) {
-          // 2. Sign in the user to get a valid session
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email: formData.email,
-            password: formData.password,
-          });
-
-          if (signInError) throw signInError;
-
-          // 3. Now that we're authenticated, insert into profiles table
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .insert([
-              { 
-                id: authData.user.id, 
-                first_name: formData.firstName,
-                last_name: formData.lastName,
-                email: formData.email,
-              }
-            ]);
-
-          if (profileError) throw profileError;
-          
-          // 4. Sign out as we want the user to explicitly sign in on the login page
-          await supabase.auth.signOut();
-          
-          // Success - redirect to login page
-          alert("Sign up successful! Please check your email for verification.");
-          navigate("/login");
-        }
-      } catch (error) {
-        setErrors({ submit: error.message });
-      } finally {
-        setLoading(false);
-      }
-    } else {
+    if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      return;
+    }
+
+    setLoading(true);
+    setErrors({});
+
+    try {
+      // 1. Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (authError) throw authError;
+
+      const userId = authData.user?.id;
+
+      if (!userId) throw new Error("User ID not returned from Supabase.");
+
+      // 2. Insert profile data into 'profiles' table
+      const { error: dbError } = await supabase.from("profiles").insert([
+        {
+          id: userId,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+        },
+      ]);
+
+      if (dbError) throw dbError;
+
+      // 3. Sign out the user to force manual login post-verification
+      await supabase.auth.signOut();
+
+      alert("Sign up successful! Please verify your email before logging in.");
+      navigate("/login");
+
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,7 +95,6 @@ export default function SignUpForm() {
       <div className="signup-container">
         <h2 className="signup-title">Create your account</h2>
         <form className="signup-form" onSubmit={handleSubmit}>
-          
           <div className="name-grid">
             <div>
               <input

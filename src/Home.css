@@ -178,7 +178,7 @@
 .about-text-title {
   font-size: 2rem;
   line-height: 1;
-  font-family: Century Gothic, sans-serif;
+  font-family: 'Century Gothic';
   color: #374331;
 }
 
@@ -296,3 +296,128 @@
   }
 }
 
+/* Section 5 Styles */
+.cards-section {
+  border-radius: 50px;
+  padding: 50px 100px;
+  background-image: url(./assets/sample3.png);
+}
+
+.cards-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;  /* Default gap between cards */
+  flex-wrap: wrap;
+}
+
+.card {
+  position: relative;
+  min-height: 350px;  /* Set a fixed height for the cards */
+  width: 30%;
+  min-width: 250px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  background-color: white;  /* Make the card fully white on hover */
+}
+
+.card-image {
+  left: 10;
+  right: 0;
+  padding: 20px;
+  width: 100px;
+  height: 100px; /* Set a consistent height for images */
+  overflow: hidden; /* Prevent any overflow of the image */
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+    /* Make sure the image fills the container without stretching */
+}
+
+.card-content {
+  padding: 20px;  /* Increase the padding for better spacing */
+  text-align: center;
+  height: 100%;  /* Ensure content fills the remaining height of the card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* Make space between image and description */
+}
+
+.card-description {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;  /* Dark background for text */
+  color: black;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  transition: opacity 0.3s ease-in-out;
+  text-align: center;
+}
+
+.card:hover .card-hover {
+  opacity: 1;
+}
+
+.card-hover-text {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .card {
+    width: 45%; /* 2 cards per row on medium screens */
+  }
+  .cards-container {
+    gap: 15px; /* Slightly smaller gap between cards */
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%; /* Stacks all cards vertically on small screens */
+    margin-bottom: 15px; /* Adds some space between stacked cards */
+  }
+  .cards-container {
+    justify-content: center; /* Centering cards when they stack */
+  }
+  .card-description {
+    font-size: 14px; /* Smaller text on small screens */
+  }
+  .card-hover-text {
+    font-size: 16px; /* Adjust hover text size */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%; /* Full width cards on very small screens */
+  }
+  .card-description {
+    font-size: 12px; /* Even smaller text on very small screens */
+  }
+  .card-hover-text {
+    font-size: 14px; /* Smaller hover text on very small screens */
+  }
+}

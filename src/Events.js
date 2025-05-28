@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js"
 import "./Events.css"
 
 // Initialize Supabase client
@@ -9,8 +9,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.REACT_AP
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing Supabase environment variables. Please check your .env.local file.')
-  throw new Error('Supabase configuration is missing')
+  console.error("Missing Supabase environment variables. Please check your .env.local file.")
+  throw new Error("Supabase configuration is missing")
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey)
@@ -23,28 +23,32 @@ function Events() {
   const [isFlipping, setIsFlipping] = useState(false)
   const [flippedCardId, setFlippedCardId] = useState(null)
   const [loading, setLoading] = useState(true)
-  
+
+  const [searchTerm, setSearchTerm] = useState("")
+
   // User authentication state
   const [user, setUser] = useState(null)
   const [userProfile, setUserProfile] = useState(null)
   const [loadingUserData, setLoadingUserData] = useState(false)
-  
+
   // Volunteer form state
   const [isVolunteerFormOpen, setIsVolunteerFormOpen] = useState(false)
   const [volunteerData, setVolunteerData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    isGuest: false
+    name: "",
+    email: "",
+    phone: "",
+    isGuest: false,
   })
   const [submittingVolunteer, setSubmittingVolunteer] = useState(false)
 
   // Check authentication status and fetch user data
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       setUser(user)
-      
+
       if (user) {
         await fetchUserProfile(user.id)
       }
@@ -53,7 +57,9 @@ function Events() {
     getUser()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null)
       if (session?.user) {
         fetchUserProfile(session.user.id)
@@ -69,39 +75,43 @@ function Events() {
   const fetchUserProfile = async (userId) => {
     try {
       setLoadingUserData(true)
-      
+
       // Try to fetch from a users/profiles table first
       const { data: profileData, error: profileError } = await supabase
-        .from('users') // or 'profiles' depending on your table name
-        .select('*')
-        .eq('id', userId)
+        .from("users") // or 'profiles' depending on your table name
+        .select("*")
+        .eq("id", userId)
         .single()
 
-      if (profileError && profileError.code !== 'PGRST116') {
-        console.error('Error fetching user profile:', profileError)
+      if (profileError && profileError.code !== "PGRST116") {
+        console.error("Error fetching user profile:", profileError)
         // Fallback to auth user data
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
         setUserProfile({
-          name: user?.user_metadata?.full_name || user?.email?.split('@')[0] || '',
-          email: user?.email || '',
-          phone: user?.user_metadata?.phone || user?.phone || ''
+          name: user?.user_metadata?.full_name || user?.email?.split("@")[0] || "",
+          email: user?.email || "",
+          phone: user?.user_metadata?.phone || user?.phone || "",
         })
       } else if (profileData) {
         setUserProfile({
-          name: profileData.full_name || profileData.name || '',
-          email: profileData.email || '',
-          phone: profileData.phone || ''
+          name: profileData.full_name || profileData.name || "",
+          email: profileData.email || "",
+          phone: profileData.phone || "",
         })
       }
     } catch (error) {
-      console.error('Error fetching user data:', error)
+      console.error("Error fetching user data:", error)
       // Fallback to basic auth data
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (user) {
         setUserProfile({
-          name: user.user_metadata?.full_name || user.email?.split('@')[0] || '',
-          email: user.email || '',
-          phone: user.user_metadata?.phone || user.phone || ''
+          name: user.user_metadata?.full_name || user.email?.split("@")[0] || "",
+          email: user.email || "",
+          phone: user.user_metadata?.phone || user.phone || "",
         })
       }
     } finally {
@@ -113,26 +123,24 @@ function Events() {
   const fetchEvents = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .order('date', { ascending: true })
+      const { data, error } = await supabase.from("events").select("*").order("date", { ascending: true })
 
       if (error) {
-        console.error('Error fetching events:', error)
+        console.error("Error fetching events:", error)
         return
       }
 
       // Filter out past events for the public view
       const currentDate = new Date()
-      const activeEvents = data?.filter(event => {
-        const eventDateTime = new Date(`${event.date}T${event.time}`)
-        return eventDateTime >= currentDate
-      }) || []
+      const activeEvents =
+        data?.filter((event) => {
+          const eventDateTime = new Date(`${event.date}T${event.time}`)
+          return eventDateTime >= currentDate
+        }) || []
 
       setEvents(activeEvents)
     } catch (error) {
-      console.error('Error:', error)
+      console.error("Error:", error)
     } finally {
       setLoading(false)
     }
@@ -144,9 +152,9 @@ function Events() {
 
     // Subscribe to changes in the events table
     const eventsSubscription = supabase
-      .channel('events_public')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, (payload) => {
-        console.log('Public: Database change received!', payload)
+      .channel("events_public")
+      .on("postgres_changes", { event: "*", schema: "public", table: "events" }, (payload) => {
+        console.log("Public: Database change received!", payload)
         fetchEvents()
       })
       .subscribe()
@@ -186,10 +194,10 @@ function Events() {
     setFlippedCardId(null)
     setIsVolunteerFormOpen(false)
     setVolunteerData({
-      name: '',
-      email: '',
-      phone: '',
-      isGuest: false
+      name: "",
+      email: "",
+      phone: "",
+      isGuest: false,
     })
   }
 
@@ -198,18 +206,18 @@ function Events() {
     if (user && userProfile) {
       // Logged-in user: auto-populate with their data
       setVolunteerData({
-        name: userProfile.name || '',
-        email: userProfile.email || '',
-        phone: userProfile.phone || '',
-        isGuest: false
+        name: userProfile.name || "",
+        email: userProfile.email || "",
+        phone: userProfile.phone || "",
+        isGuest: false,
       })
     } else {
       // Not logged in: empty form as guest
       setVolunteerData({
-        name: '',
-        email: '',
-        phone: '',
-        isGuest: true
+        name: "",
+        email: "",
+        phone: "",
+        isGuest: true,
       })
     }
     setIsVolunteerFormOpen(true)
@@ -218,45 +226,45 @@ function Events() {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setVolunteerData(prev => ({
+    setVolunteerData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
   // Submit volunteer registration
   const handleVolunteerSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!volunteerData.name.trim() || !volunteerData.email.trim()) {
-      alert('Please fill in your name and email')
+      alert("Please fill in your name and email")
       return
     }
 
     try {
       setSubmittingVolunteer(true)
-      
+
       // Check if user already volunteered for this event
       const { data: existingVolunteer, error: checkError } = await supabase
-        .from('volunteers')
-        .select('*')
-        .eq('event_id', selectedEvent.id)
-        .eq('email', volunteerData.email.trim())
+        .from("volunteers")
+        .select("*")
+        .eq("event_id", selectedEvent.id)
+        .eq("email", volunteerData.email.trim())
         .single()
 
-      if (checkError && checkError.code !== 'PGRST116') {
+      if (checkError && checkError.code !== "PGRST116") {
         // PGRST116 is "no rows returned" - that's what we want
         throw checkError
       }
 
       if (existingVolunteer) {
-        alert('You have already registered as a volunteer for this event!')
+        alert("You have already registered as a volunteer for this event!")
         return
       }
 
       // Insert volunteer data with all required fields for VolunteerCount display
       const { data, error } = await supabase
-        .from('volunteers')
+        .from("volunteers")
         .insert([
           {
             event_id: selectedEvent.id,
@@ -266,8 +274,8 @@ function Events() {
             phone: volunteerData.phone.trim() || null,
             is_guest: volunteerData.isGuest,
             user_id: !volunteerData.isGuest && user ? user.id : null, // Link to user if logged in member
-            created_at: new Date().toISOString()
-          }
+            created_at: new Date().toISOString(),
+          },
         ])
         .select()
 
@@ -275,24 +283,27 @@ function Events() {
         throw error
       }
 
-      console.log('Volunteer registered successfully:', data)
-      console.log('✅ This volunteer data will now appear in VolunteerCount component')
-      
-      alert(`Thank you for volunteering${volunteerData.isGuest ? ' as a guest' : ''} for "${selectedEvent.title}"!\n\nYour registration will appear in the admin volunteer dashboard.`)
+      console.log("Volunteer registered successfully:", data)
+      console.log("✅ This volunteer data will now appear in VolunteerCount component")
+
+      alert(
+        `Thank you for volunteering${volunteerData.isGuest ? " as a guest" : ""} for "${selectedEvent.title}"!\n\nYour registration will appear in the admin volunteer dashboard.`,
+      )
       closeModal()
 
       // Trigger custom event for immediate VolunteerCount update
-      window.dispatchEvent(new CustomEvent('volunteerRegistered', { 
-        detail: { 
-          eventId: selectedEvent.id, 
-          volunteerData: data[0],
-          eventTitle: selectedEvent.title
-        } 
-      }))
-
+      window.dispatchEvent(
+        new CustomEvent("volunteerRegistered", {
+          detail: {
+            eventId: selectedEvent.id,
+            volunteerData: data[0],
+            eventTitle: selectedEvent.title,
+          },
+        }),
+      )
     } catch (error) {
-      console.error('Error registering volunteer:', error)
-      alert('Error registering volunteer: ' + error.message)
+      console.error("Error registering volunteer:", error)
+      alert("Error registering volunteer: " + error.message)
     } finally {
       setSubmittingVolunteer(false)
     }
@@ -300,9 +311,9 @@ function Events() {
 
   // Format time for display
   const formatTime = (time) => {
-    const [hours, minutes] = time.split(':')
-    const hour = parseInt(hours)
-    const ampm = hour >= 12 ? 'PM' : 'AM'
+    const [hours, minutes] = time.split(":")
+    const hour = Number.parseInt(hours)
+    const ampm = hour >= 12 ? "PM" : "AM"
     const displayHour = hour % 12 || 12
     return `${displayHour}:${minutes} ${ampm}`
   }
@@ -310,6 +321,14 @@ function Events() {
   const formatEventTime = (time) => {
     return formatTime(time)
   }
+
+  // Filter events based on search term
+  const filteredEvents = events.filter((event) => {
+    if (!searchTerm.trim()) return true
+
+    const searchLower = searchTerm.toLowerCase()
+    return event.title.toLowerCase().includes(searchLower)
+  })
 
   if (loading) {
     return (
@@ -323,22 +342,47 @@ function Events() {
     <div className="events-container">
       <h1 className="events-title">Upcoming Events</h1>
 
-      <div className="sort-container">
-        <label htmlFor="sort-select">Sort by: </label>
-        <select id="sort-select" value={sortOrder} onChange={handleSortChange} className="sort-select">
-          <option value="nearest">Nearest Events</option>
-          <option value="farthest">Farthest Events</option>
-        </select>
+      <div
+        className="controls-container"
+        style={{ display: "flex", gap: "15px", alignItems: "center", marginBottom: "20px", flexWrap: "wrap" }}
+      >
+        <div className="search-container" style={{ flex: "1", minWidth: "200px" }}>
+          <input
+          className="search-input"
+            type="text"
+            placeholder="Search events..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              border: "1px solid #ddd",
+              borderRadius: "4px",
+              fontSize: "14px",
+            }}
+          />
+        </div>
+        <div className="sort-container" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <label htmlFor="sort-select">Sort by: </label>
+          <select id="sort-select" value={sortOrder} onChange={handleSortChange} className="sort-select">
+            <option value="nearest">Upcoming Events</option>
+            <option value="farthest">Future Events</option>
+          </select>
+        </div>
       </div>
 
-      {events.length === 0 ? (
+      {filteredEvents.length === 0 ? (
         <div className="no-events-message">
-          <h2>No upcoming events</h2>
-          <p>Check back soon for new events!</p>
+          <h2>{searchTerm.trim() ? "No events found" : "No upcoming events"}</h2>
+          <p>
+            {searchTerm.trim()
+              ? `No events match "${searchTerm}". Try a different search term.`
+              : "Check back soon for new events!"}
+          </p>
         </div>
       ) : (
         <div className="events-grid">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div
               key={event.id}
               className={`event-card ${flippedCardId === event.id ? "flipping" : ""}`}
@@ -374,11 +418,12 @@ function Events() {
                 <p className="modal-description">{selectedEvent.description}</p>
                 <div className="modal-datetime">
                   <p>
-                    <strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
+                    <strong>Date:</strong>{" "}
+                    {new Date(selectedEvent.date).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </p>
                   <p>
@@ -388,12 +433,8 @@ function Events() {
 
                 {!isVolunteerFormOpen ? (
                   <div className="modal-buttons">
-                    <button 
-                      className="volunteer-button" 
-                      onClick={handleVolunteerClick}
-                      disabled={loadingUserData}
-                    >
-                      {loadingUserData ? 'Loading...' : (user ? 'Volunteer' : 'Volunteer (Guest)')}
+                    <button className="volunteer-button" onClick={handleVolunteerClick} disabled={loadingUserData}>
+                      {loadingUserData ? "Loading..." : user ? "Volunteer" : "Volunteer (Guest)"}
                     </button>
                   </div>
                 ) : (
@@ -408,11 +449,14 @@ function Events() {
                       ) : (
                         <div className="guest-status">
                           <span className="status-badge guest">👤 Guest Registration</span>
-                          <p className="status-description">You're volunteering as a guest. Consider creating an account for easier future registrations!</p>
+                          <p className="status-description">
+                            You're volunteering as a guest. Consider creating an account for easier future
+                            registrations!
+                          </p>
                         </div>
                       )}
                     </div>
-                    
+
                     <form onSubmit={handleVolunteerSubmit} className="volunteer-form">
                       <div className="form-group">
                         <label htmlFor="volunteer-name">Full Name *</label>
@@ -427,17 +471,17 @@ function Events() {
                           disabled={loadingUserData}
                           readOnly={user && !volunteerData.isGuest && volunteerData.name}
                           style={{
-                            width: '100%',
-                            padding: '8px',
-                            border: '1px solid #ddd',
-                            borderRadius: '4px',
-                            marginTop: '4px',
-                            backgroundColor: (user && !volunteerData.isGuest && volunteerData.name) ? '#f8f9fa' : 'white',
-                            cursor: (user && !volunteerData.isGuest && volunteerData.name) ? 'not-allowed' : 'text'
+                            width: "100%",
+                            padding: "8px",
+                            border: "1px solid #ddd",
+                            borderRadius: "4px",
+                            marginTop: "4px",
+                            backgroundColor: user && !volunteerData.isGuest && volunteerData.name ? "#f8f9fa" : "white",
+                            cursor: user && !volunteerData.isGuest && volunteerData.name ? "not-allowed" : "text",
                           }}
                         />
                         {user && !volunteerData.isGuest && volunteerData.name && (
-                          <small style={{ color: '#666', fontSize: '0.8em' }}>Auto-filled from your profile</small>
+                          <small style={{ color: "#666", fontSize: "0.8em" }}>Auto-filled from your profile</small>
                         )}
                       </div>
 
@@ -454,46 +498,51 @@ function Events() {
                           disabled={loadingUserData}
                           readOnly={user && !volunteerData.isGuest && volunteerData.email}
                           style={{
-                            width: '100%',
-                            padding: '8px',
-                            border: '1px solid #ddd',
-                            borderRadius: '4px',
-                            marginTop: '4px',
-                            backgroundColor: (user && !volunteerData.isGuest && volunteerData.email) ? '#f8f9fa' : 'white',
-                            cursor: (user && !volunteerData.isGuest && volunteerData.email) ? 'not-allowed' : 'text'
+                            width: "100%",
+                            padding: "8px",
+                            border: "1px solid #ddd",
+                            borderRadius: "4px",
+                            marginTop: "4px",
+                            backgroundColor:
+                              user && !volunteerData.isGuest && volunteerData.email ? "#f8f9fa" : "white",
+                            cursor: user && !volunteerData.isGuest && volunteerData.email ? "not-allowed" : "text",
                           }}
                         />
                         {user && !volunteerData.isGuest && volunteerData.email && (
-                          <small style={{ color: '#666', fontSize: '0.8em' }}>Auto-filled from your profile</small>
+                          <small style={{ color: "#666", fontSize: "0.8em" }}>Auto-filled from your profile</small>
                         )}
                       </div>
 
-                      <div className="form-buttons" style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                      <div className="form-buttons" style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
                         <button
                           type="submit"
                           disabled={submittingVolunteer || loadingUserData}
                           style={{
-                            backgroundColor: '#28a745',
-                            color: 'white',
-                            padding: '10px 20px',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: (submittingVolunteer || loadingUserData) ? 'not-allowed' : 'pointer',
-                            opacity: (submittingVolunteer || loadingUserData) ? 0.6 : 1
+                            backgroundColor: "#28a745",
+                            color: "white",
+                            padding: "10px 20px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: submittingVolunteer || loadingUserData ? "not-allowed" : "pointer",
+                            opacity: submittingVolunteer || loadingUserData ? 0.6 : 1,
                           }}
                         >
-                          {submittingVolunteer ? 'Registering...' : loadingUserData ? 'Loading...' : 'Register as Volunteer'}
+                          {submittingVolunteer
+                            ? "Registering..."
+                            : loadingUserData
+                              ? "Loading..."
+                              : "Register as Volunteer"}
                         </button>
                         <button
                           type="button"
                           onClick={() => setIsVolunteerFormOpen(false)}
                           style={{
-                            backgroundColor: '#6c757d',
-                            color: 'white',
-                            padding: '10px 20px',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
+                            backgroundColor: "#6c757d",
+                            color: "white",
+                            padding: "10px 20px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
                           }}
                         >
                           Cancel

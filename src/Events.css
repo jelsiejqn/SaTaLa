@@ -1,4 +1,8 @@
 /* Main container styles */
+
+.search-container, .search-input {
+  border-radius: 20px;
+}
 .events-container {
   max-width: 1200px;
   margin: 0 auto;

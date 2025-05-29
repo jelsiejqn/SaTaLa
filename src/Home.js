@@ -16,6 +16,9 @@ import about1 from './assets/about-1.png';
 import about2 from './assets/about-2.png';
 import about3 from './assets/about-3.png';
 
+import aboutpic1 from './assets/about-pic1.png'
+import aboutpic2 from './assets/about-pic2.png'
+
 
 function Home() {
   const navigate = useNavigate();
@@ -184,6 +187,36 @@ function Home() {
     {/* You can duplicate this structure for more cards */}
   </div>
 </section>
+
+{/* Section 6 */}
+<section className="section-6">
+  {/* Row 1 - Image Right, Text Left */}
+  <div className="section-6-row">
+    <div className="section-6-text">
+      <h2>Sagip Taal Lake is Counting on You!</h2>
+      <p>
+        “We need people on the ground, we need them to do the work,” says Nelson. “If they want to donate trash cans, they have to purchase the trash cans, deliver them, and help with the installation. We value participation more than anything.” They know that it’s that personal labor of love that they have put in that is making SaTaLa work so well, and that it has worked without cash being put in.
+      </p>
+    </div>
+    <div className="section-6-image">
+      <img src={aboutpic2} alt="Mission Visual" />
+    </div>
+  </div>
+
+  {/* Row 2 - Image Left, Text Right */}
+  <div className="section-6-row image-left-row">
+    <div className="section-6-image">
+      <img src={aboutpic1} alt="Vision Visual" />
+    </div>
+    <div className="section-6-text">
+      <h2>Taal Lake Needs You!</h2>
+      <p>
+       Everything is purely voluntary. The group brainstorms on how to execute their projects such as Ampon baybay lawa at ilog, and Pera sa Basura, then they sign up their groups to implement them. Corporate sponsors are welcome, but must earn their trust and respect, being aware that this is a community-driven effort that is very personal to the Talisenos.
+      </p>
+    </div>
+  </div>
+</section>
+
 
       {/* Section 4 - Dynamic FAQ Cards */}
       <br /> <br />  <br /> <br /> <center> 

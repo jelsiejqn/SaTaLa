@@ -126,7 +126,8 @@
 
 .about-section {
   padding: 40px 0;
-  background-color: transparent;
+  background-color: white;
+  border-radius: 50px;
 }
 
 .about-container {
@@ -281,7 +282,7 @@
 .faq-answer {
   font-size: 0.95rem;
   text-align: center;
-  color: #555;
+  color: #374331;
 }
 
 /* Responsive adjustments */
@@ -298,9 +299,11 @@
 
 /* Section 5 Styles */
 .cards-section {
-  border-radius: 50px;
+  z-index: 1;
+  /* transform: translate(0%, -20%); */
   padding: 50px 100px;
-  background-image: url(./assets/sample3.png);
+  /* background-image: url(./assets/sample3.png); */
+  background-color: white;
 }
 
 .cards-container {
@@ -311,12 +314,13 @@
 }
 
 .card {
+  color: #374331;
   position: relative;
   min-height: 350px;  /* Set a fixed height for the cards */
   width: 30%;
   min-width: 250px;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -354,7 +358,7 @@
 .card-description {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #374331;
 }
 
 .card-hover {
@@ -364,7 +368,7 @@
   right: 0;
   bottom: 0;
   background-color: white;  /* Dark background for text */
-  color: black;
+  color: #374331;
   opacity: 0;
   display: flex;
   justify-content: center;
@@ -420,4 +424,54 @@
   .card-hover-text {
     font-size: 14px; /* Smaller hover text on very small screens */
   }
+}
+
+/* Section 6 */
+
+.section-6 {
+  font-family: "Century Gothic", sans-serif;
+  color: #374331;
+}
+
+.section-6-row {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.section-6-row.image-left-row {
+  flex-direction: row; /* Explicitly sets image on left, text on right */
+}
+
+.section-6-text {
+  flex: 1;
+  min-width: 50px;
+}
+
+.section-6-image {
+  max-width: 980px;
+}
+
+.section-6-text {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-6-text h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.section-6-text p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.section-6-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
